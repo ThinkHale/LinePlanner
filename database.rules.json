@@ -1,6 +1,70 @@
+// Line Planner — Realtime Database security rules
+//
+// Access requires a signed-in user whose UID is listed under /allowedUsers.
+// Being signed in is NOT sufficient: the Firebase web API key is public by
+// necessity (it ships inside index.html), so anyone can create an account.
+// The allowlist is what actually gates the data.
+//
+// To add a teammate: have them sign up in the app, then an owner runs
+//   firebase database:set /allowedUsers/<uid> --project lineplanner-7a8af
+// (echo 'true' into it), or sets it in the console under
+// Realtime Database -> Data. Find UIDs under Authentication -> Users.
+//
+// To revoke someone: delete their /allowedUsers/<uid> entry, and delete the
+// account under Authentication -> Users.
+//
+// There is deliberately no root-level rule, so /allowedUsers cannot be edited
+// by app users — only by an owner via console/CLI, which bypass rules.
+// Root-level multi-path update() calls still work: Realtime Database validates
+// each written path against that path's own rules.
+
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    // Only an owner (console/CLI) may change the allowlist.
+    "allowedUsers": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": false
+    },
+
+    "staffing": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    },
+
+    "roster": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    },
+
+    "settings": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    },
+
+    "activity": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    },
+
+    "users": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    },
+
+    // Populated only when the rosterAdmin feature flag is enabled.
+    "statusList": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    },
+
+    "statusMeta": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    },
+
+    "statusRaw": {
+      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+    }
   }
 }

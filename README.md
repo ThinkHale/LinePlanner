@@ -168,30 +168,60 @@ Cloud sync uses Firebase Realtime Database plus Email/Password auth, against pro
 If Firebase can't be reached the app falls back to `localStorage` and keeps working
 offline; a yellow banner tells you when that's happening.
 
-### Setup status
+### About the API key in `index.html`
 
-Setup is complete and verified end to end — sign-up, cloud save, and read-back all work:
+GitHub secret scanning flags the `AIza…` string in `index.html` as a Google API key.
+**It is meant to be public** — a Firebase web app cannot work without shipping its
+config to the browser, so rotating it accomplishes nothing; the replacement would be
+equally visible. The key is also restricted to Firebase APIs only, so it can't be used
+against other Google services.
 
-- Web app registered, config baked into `index.html`.
-- Realtime Database `lineplanner-7a8af-default-rtdb` created.
-- Email/Password sign-in enabled.
-- Rules live and confirmed: anonymous access denied, signed-in read/write allowed.
+What the public key *does* allow is creating an account in this project. So being
+signed in cannot be the thing that grants access to data — see below.
 
-`database.rules.json` in this repo matches what's live. To re-publish it after an edit:
+### Access control
+
+`database.rules.json` requires a signed-in user **whose UID is listed under
+`/allowedUsers`**. A stranger can still register an account, but it gets them nothing:
+every path denies them.
+
+To add a teammate — have them sign up in the app first, then:
+
+```sh
+echo 'true' | firebase database:set /allowedUsers/<their-uid> --project lineplanner-7a8af
+```
+
+Find UIDs in the Firebase console under **Authentication → Users**. To revoke someone,
+delete their `/allowedUsers` entry and their account.
+
+`/allowedUsers` is not writable by app users at all — only via console/CLI, which bypass
+rules. That means an approved user cannot approve anyone else.
+
+To re-publish rules after editing:
 
 ```sh
 firebase deploy --only database
 ```
+
+### Worth doing
+
+- **Disable self-service sign-up** (Authentication → Settings → User actions) so
+  strangers can't create accounts at all. The allowlist already makes those accounts
+  useless, but this stops the clutter.
+- **Firebase App Check** if you want requests attested as coming from your real app.
+
+### Setup status
+
+Verified end to end: sign-up, cloud save, and read-back all work. Realtime Database
+`lineplanner-7a8af-default-rtdb` is live, Email/Password sign-in is enabled, and the
+allowlist rules are deployed and confirmed — anonymous denied, non-allowlisted accounts
+denied, allowlisted accounts read/write.
 
 > Note: if a database instance is ever missing or unreachable, saving a new shift hangs
 > on the Setup screen rather than failing — the app awaits a database read that never
 > resolves.
 
 ### Accounts
-
-No accounts exist yet — the first person to use the app creates one from the login
-screen. Anyone can self-register; to keep it closed, create accounts yourself in the
-console and lock sign-up down there.
 
 The login screen supports sign-in, self-service sign-up, and password reset. Auth is
 only enforced when the Firebase SDK loads and the config is valid; otherwise the app
