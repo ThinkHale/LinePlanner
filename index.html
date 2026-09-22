@@ -1389,6 +1389,283 @@
         .sync-preview-box {
             background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 16px; margin-bottom: 16px;
         }
+
+        /* .btn-primary / .btn-secondary are styled white-on-translucent for the
+           purple header bar, so they disappear on a light panel. These screens
+           sit on white, so give their buttons real contrast — the same fix
+           .stats-bar already applies to the staffing toolbar. */
+        .panel-view .btn-primary {
+            background: #667eea;
+            color: white;
+            border: 1px solid #5566d6;
+        }
+        .panel-view .btn-primary:hover { background: #5566d6; }
+        .panel-view .btn-secondary {
+            background: #eef1f5;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        .panel-view .btn-secondary:hover { background: #e2e6ec; }
+
+        /* ===== Associates ===== */
+        .assoc-row {
+            display: grid;
+            grid-template-columns: 110px minmax(180px, 2fr) 150px 110px 100px 130px 140px 80px;
+            gap: 8px;
+            align-items: center;
+            padding: 7px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 12px;
+        }
+        .assoc-row:last-child { border-bottom: none; }
+        .assoc-row:hover { background: #f9fafb; }
+        .assoc-head {
+            background: #f3f4f6;
+            font-weight: 700;
+            color: #374151;
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: 0.4px;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+        }
+        .assoc-inactive { opacity: 0.6; }
+        .assoc-cell { color: #4b5563; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .assoc-name { font-weight: 600; color: #111827; overflow: hidden; text-overflow: ellipsis; }
+        .assoc-days { display: flex; gap: 2px; }
+        .assoc-actions { text-align: right; }
+        .status-select {
+            width: 100%;
+            padding: 4px 6px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 5px;
+            border: 1px solid #d1d5db;
+            cursor: pointer;
+        }
+        .status-select.is-active { background: #ecfdf5; border-color: #a7f3d0; color: #065f46; }
+        .status-select.is-inactive { background: #f3f4f6; border-color: #d1d5db; color: #6b7280; }
+        .day-chip {
+            width: 17px;
+            height: 17px;
+            border-radius: 4px;
+            background: #f3f4f6;
+            color: #9ca3af;
+            font-size: 9px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .day-chip.on { background: #667eea; color: white; }
+        .day-toggle {
+            padding: 5px 10px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #6b7280;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .day-toggle.on { background: #667eea; border-color: #667eea; color: white; }
+        .link-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            color: #4f46e5;
+            cursor: pointer;
+            text-align: left;
+        }
+        .link-btn:hover { text-decoration: underline; }
+
+        /* ===== Attendance ===== */
+        .metric-strip { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+        .metric-card {
+            flex: 1 1 120px;
+            padding: 10px 14px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        .metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 700; }
+        .metric-value { font-size: 22px; font-weight: 700; color: #111827; margin-top: 2px; }
+        .att-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .att-table th, .att-table td { border: 1px solid #edf0f3; padding: 5px 7px; }
+        .att-table thead th {
+            background: #f3f4f6;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #374151;
+            position: sticky;
+            top: 0;
+            /* Above the body's sticky first column, or scrolled rows show through. */
+            z-index: 5;
+        }
+        .att-table thead tr:first-child th { height: 34px; }
+        .att-table tr.att-subhead th { top: 34px; font-size: 9px; background: #f9fafb; }
+        .att-th-sub { font-size: 9px; font-weight: 500; color: #6b7280; text-transform: none; letter-spacing: 0; }
+        .att-sticky { position: sticky; left: 0; background: white; z-index: 3; min-width: 190px; }
+        .att-table thead .att-sticky { background: #f3f4f6; z-index: 6; }
+        .att-name { font-weight: 600; color: #111827; }
+        .att-confirm-cell { text-align: center; width: 30px; background: #fbfbfd; }
+        .att-cell { white-space: nowrap; }
+        .att-cell.att-present { background: #ecfdf5; }
+        .att-cell.att-absent { background: #fef2f2; }
+        .att-cell.att-none { background: #fafafa; }
+        .att-present-tag { font-weight: 700; color: #047857; font-size: 11px; }
+        .att-off { color: #9ca3af; font-style: italic; font-size: 11px; }
+        .att-reason { font-size: 11px; padding: 2px 4px; border: 1px solid #fecaca; border-radius: 4px; background: white; color: #991b1b; font-weight: 600; }
+        .att-flip {
+            margin-left: 4px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #9ca3af;
+            font-size: 12px;
+            padding: 0 2px;
+        }
+        .att-flip:hover { color: #4f46e5; }
+        .att-notes { width: 100%; border: 1px solid #e5e7eb; border-radius: 4px; padding: 4px 6px; font-size: 11px; font-family: inherit; }
+        .att-day {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            background: #fafafa;
+        }
+        .att-day.att-present { background: #ecfdf5; border-color: #a7f3d0; }
+        .att-day.att-absent { background: #fef2f2; border-color: #fecaca; }
+        .att-day-label { font-size: 10px; font-weight: 700; color: #374151; text-transform: uppercase; }
+        .att-day select { font-size: 11px; padding: 3px 4px; border: 1px solid #d1d5db; border-radius: 4px; background: white; }
+        .att-confirm { font-size: 10px; color: #4b5563; display: flex; align-items: center; gap: 3px; }
+        .att-placed { font-size: 10px; color: #047857; font-weight: 700; }
+
+        /* ===== Scorecard ===== */
+        .sc-block { display: flex; gap: 14px; align-items: flex-start; flex-wrap: wrap; }
+        .sc-kpi-panel {
+            flex: 0 0 220px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 14px;
+            background: #fafafa;
+        }
+        .sc-site { font-size: 18px; font-weight: 800; letter-spacing: 1px; color: #111827; margin-bottom: 12px; }
+        .sc-kpi { margin-bottom: 14px; }
+        .sc-kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #6b7280; font-weight: 700; }
+        .sc-kpi-value { font-size: 26px; font-weight: 700; color: #111827; }
+        .sc-kpi-note { font-size: 10px; color: #9ca3af; line-height: 1.4; border-top: 1px solid #e5e7eb; padding-top: 8px; }
+        .sc-table-wrap { flex: 1 1 520px; overflow-x: auto; border: 1px solid #e5e7eb; border-radius: 8px; }
+        .sc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .sc-table th, .sc-table td { border: 1px solid #e8ebef; padding: 4px 8px; text-align: center; }
+        .sc-table thead th { background: #f3f4f6; font-size: 11px; font-weight: 700; color: #374151; }
+        .sc-table tr.sc-subhead th { background: #f9fafb; font-size: 10px; font-weight: 600; color: #6b7280; }
+        .sc-rowlabel { text-align: left !important; font-weight: 600; color: #374151; white-space: nowrap; min-width: 190px; }
+        .sc-total-col { background: #f9fafb; font-weight: 700; }
+        .sc-tag {
+            margin-left: 6px;
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 1px 5px;
+            border-radius: 8px;
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+        .sc-tag-calc { background: #f3f4f6; color: #6b7280; }
+        .sc-computed-row { background: #fbfbfd; }
+        .sc-calc { font-weight: 700; color: #374151; }
+        .sc-derived input, .sc-manual input {
+            width: 100%;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            padding: 3px 4px;
+            font-size: 12px;
+            text-align: center;
+            font-family: inherit;
+            background: transparent;
+        }
+        .sc-derived { background: #f6f7fb; }
+        .sc-derived input::placeholder { color: #6b7280; opacity: 1; }
+        .sc-manual input { background: white; border-color: #e5e7eb; }
+        .sc-derived input:focus, .sc-manual input:focus { outline: none; border-color: #667eea; background: white; }
+        .sc-derived input.sc-overridden { background: #fffbeb; border-color: #fcd34d; font-weight: 700; }
+        .sc-cell { display: flex; align-items: center; gap: 2px; }
+        .sc-cell input { min-width: 0; }
+        .sc-reset {
+            flex: 0 0 auto;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: #b45309;
+            font-size: 12px;
+            line-height: 1;
+            padding: 0 2px;
+        }
+        .sc-reset:hover { color: #78350f; }
+        .sc-good { color: #047857; }
+        .sc-warn { color: #b45309; }
+        .sc-bad { color: #b91c1c; }
+        td.sc-calc.sc-good { background: #ecfdf5; }
+        td.sc-calc.sc-warn { background: #fffbeb; }
+        td.sc-calc.sc-bad { background: #fef2f2; }
+
+        /* ===== Email prep ===== */
+        .email-meta {
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 8px 10px;
+            font-size: 12px;
+            color: #374151;
+            background: #fafafa;
+            margin-bottom: 10px;
+            line-height: 1.7;
+            word-break: break-word;
+        }
+        .email-meta-label {
+            display: inline-block;
+            min-width: 54px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6b7280;
+            font-weight: 700;
+        }
+        .email-total { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 8px; }
+        .email-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .email-table th, .email-table td { border: 1px solid #edf0f3; padding: 4px 8px; text-align: left; }
+        .email-table thead th {
+            background: #f3f4f6;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #374151;
+            position: sticky;
+            top: 0;
+        }
+        .email-table input { width: 100%; border: 1px solid transparent; border-radius: 4px; padding: 2px 4px; font-size: 12px; font-family: inherit; background: transparent; }
+        .email-table input:focus { outline: none; border-color: #667eea; background: white; }
+        .email-num { text-align: center !important; font-weight: 600; }
+        .email-short { color: #b91c1c; }
+        .email-cut { opacity: 0.55; }
+        .email-totals-row { background: #f9fafb; font-weight: 700; }
+        .email-extras { margin-top: 10px; font-size: 12px; color: #374151; }
+        .email-preview {
+            margin-top: 6px;
+            padding: 10px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 11px;
+            white-space: pre;
+            overflow-x: auto;
+            max-height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -1827,6 +2104,596 @@
             });
         };
 
+        // ===================================================================
+        // Associates / Attendance / Scorecard
+        //
+        // The site roster ("Korpack Recruiting Roster") is uploaded here and
+        // upserted into `roster/associates`. Each associate carries a status
+        // (active/inactive), a start date, the days they're scheduled for, and
+        // per-week attendance. Attendance is *derived* from the saved staffing
+        // sheets — on a line means present, on the roster but not on a line
+        // means absent — with per-day overrides for the reason.
+        // ===================================================================
+
+        const DOW_LABELS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        // Two letters, so Tue/Thu and Sat/Sun stay apart in the compact chips.
+        const DOW_MINI = ['Su', 'M', 'Tu', 'W', 'Th', 'F', 'Sa'];
+        const DOW_LONG = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        // Header spellings seen in the field ("THUR", "THURS", "TH") mapped to a
+        // day-of-week index.
+        const DOW_ALIASES = {
+            sun: 0, sunday: 0, su: 0,
+            mon: 1, monday: 1, mo: 1,
+            tue: 2, tues: 2, tuesday: 2, tu: 2,
+            wed: 3, weds: 3, wednesday: 3, we: 3,
+            thu: 4, thur: 4, thurs: 4, thursday: 4, th: 4,
+            fri: 5, friday: 5, fr: 5,
+            sat: 6, saturday: 6, sa: 6
+        };
+        const dowFromLabel = (v) => {
+            const k = (v == null ? '' : v.toString()).toLowerCase().replace(/[^a-z]/g, '');
+            return k && DOW_ALIASES[k] !== undefined ? DOW_ALIASES[k] : null;
+        };
+
+        const ABSENCE_REASONS = [
+            { id: 'calloff', label: 'Call-Off', short: 'CO', color: '#f59e0b' },
+            { id: 'ncns', label: 'NCNS', short: 'NC', color: '#ef4444' },
+            { id: 'excused', label: 'Excused', short: 'EX', color: '#6b7280' },
+            { id: 'pto', label: 'PTO', short: 'PTO', color: '#3b82f6' }
+        ];
+        const reasonLabel = (id) => (ABSENCE_REASONS.find(r => r.id === id) || {}).label || '';
+
+        // A roster key that survives re-uploads: the CRM/employee number when the
+        // sheet has one, otherwise a normalized form of the name.
+        const makeAssociateKey = (crm, name) => {
+            const digits = normalizeEid(crm);
+            if (digits) return digits;
+            const token = nameTokenKey(name).replace(/\s+/g, '_');
+            return token ? `N-${token}` : '';
+        };
+
+        const isAssociateActive = (a) => {
+            if (!a) return false;
+            if (a.status) return a.status === 'active';
+            return a.isActive !== false;
+        };
+
+        // Day-of-week list an associate is scheduled for. Stored as ints so it
+        // survives a change in day labels.
+        const scheduledDowList = (a) => {
+            const raw = (a && a.scheduledDays) || [];
+            const list = Array.isArray(raw) ? raw : Object.keys(raw).filter(k => raw[k]);
+            return list.map(v => (typeof v === 'number' ? v : dowFromLabel(v))).filter(v => v !== null && v !== undefined);
+        };
+        const isScheduledOn = (a, isoDate) => {
+            const days = scheduledDowList(a);
+            if (!days.length) return false;
+            const d = parseSheetDate(isoDate);
+            return d ? days.includes(d.getDay()) : false;
+        };
+
+        // ---- Week math. A week runs Monday..Sunday and is named for its Sunday,
+        // matching the "week ending" blocks in the Korpack scorecard. ----
+        const weekEndingOf = (dateLike) => {
+            const d = (dateLike instanceof Date) ? new Date(dateLike) : parseSheetDate(dateLike);
+            if (!d) return '';
+            const end = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+            const offset = (7 - end.getDay()) % 7; // Sunday -> 0
+            end.setDate(end.getDate() + offset);
+            return toISODate(end);
+        };
+        const weekDates = (weekEndingISO) => {
+            const end = parseSheetDate(weekEndingISO);
+            if (!end) return [];
+            const out = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(end.getFullYear(), end.getMonth(), end.getDate() - i);
+                out.push(toISODate(d));
+            }
+            return out; // Monday .. Sunday
+        };
+        const shiftWeek = (weekEndingISO, deltaWeeks) => {
+            const end = parseSheetDate(weekEndingISO);
+            if (!end) return weekEndingISO;
+            end.setDate(end.getDate() + deltaWeeks * 7);
+            return toISODate(end);
+        };
+
+        // ---- Placements: who was on a line, per date, across saved shifts ----
+        // { '2026-09-19': { 'jane doe': { letter, shift, isNew } } }
+        const buildPlacementIndex = (reports) => {
+            const idx = {};
+            (reports || []).forEach(r => {
+                if (!r || !r.date) return;
+                const day = idx[r.date] || (idx[r.date] = {});
+                (r.lines || []).forEach(line => {
+                    if (line.isCut) return;
+                    (line.positions || []).forEach(p => {
+                        const nm = (p.name || '').trim();
+                        if (!nm) return;
+                        day[normalizeName(nm)] = { letter: line.letter || '', shift: r.shift || '', isNew: !!p.isNew };
+                    });
+                });
+            });
+            return idx;
+        };
+
+        // Totals for one calendar date across every shift saved for it.
+        const dayTotalsFromReports = (reports, isoDate) => {
+            const totals = { required: 0, working: 0, newStarts: 0, linesCut: 0, unassigned: 0, hasData: false };
+            (reports || []).forEach(r => {
+                if (!r || r.date !== isoDate) return;
+                totals.hasData = true;
+                (r.lines || []).forEach(line => {
+                    if (line.isCut) { totals.linesCut += 1; return; }
+                    totals.required += Math.max(0, parseInt(line.needed) || 0);
+                    (line.positions || []).forEach(p => {
+                        if (!(p.name || '').trim()) return;
+                        totals.working += 1;
+                        if (p.isNew) totals.newStarts += 1;
+                    });
+                });
+                totals.unassigned += (r.dailyRoster || []).filter(w => (w.name || '').trim()).length;
+            });
+            return totals;
+        };
+
+        // ---- Attendance resolution ----
+        // An override always wins. Otherwise: on a line => present; scheduled but
+        // not on a line => absent; anything else => not scheduled (blank).
+        const resolveAttendance = (assoc, isoDate, placements, entry) => {
+            const dayRec = (entry && entry.days && entry.days[isoDate]) || {};
+            const placed = placements && placements[isoDate]
+                ? placements[isoDate][normalizeName(assoc.fullName || '')]
+                : null;
+            let status = dayRec.status || '';
+            if (!status) {
+                if (placed) status = 'present';
+                else if (isScheduledOn(assoc, isoDate) && isAssociateActive(assoc)) status = 'absent';
+            }
+            return {
+                status,
+                reason: status === 'absent' ? (dayRec.reason || '') : '',
+                confirmed: !!dayRec.confirmed,
+                overridden: !!dayRec.status,
+                placedOn: placed ? placed.letter : '',
+                scheduled: isScheduledOn(assoc, isoDate)
+            };
+        };
+
+        // ---- Korpack roster workbook parser ----
+        // The recruiting roster doesn't start at row 1 (there's a title and a
+        // leads line above it), so the header row is found by scanning. Sheets
+        // named for exits (NCNS / Terminate / Declines) are read as name-only
+        // lists and flip those people to inactive.
+        const KORPACK_FIELD_MAP = [
+            { key: 'fullName', match: ['employeename', 'associatename', 'fullname', 'name'] },
+            { key: 'startDate', match: ['startdate', 'start'] },
+            { key: 'phone', match: ['phonenumber', 'phone', 'cell', 'mobile'] },
+            { key: 'crmNumber', match: ['crm', 'crmnumber', 'crm#'] },
+            { key: 'background', match: ['background', 'bg'] },
+            { key: 'language', match: ['language', 'languages'] },
+            { key: 'last4', match: ['last4ssn', 'last4', 'ssn'] },
+            { key: 'recruiter', match: ['recruiter'] },
+            { key: 'assigned', match: ['assigned'] },
+            { key: 'notes', match: ['notes', 'note', 'comments'] }
+        ];
+
+        // Rows in the middle of the roster that are section labels or running
+        // totals, not people — they sit in the name column like everyone else.
+        const ROSTER_SECTION_MARKERS = /^(headcount|under\s*\(|over\s*\(|total\b|totals\b|open positions|no answer|start next week|pending\b|leads?\s*:|not started|declined|terminated|ncns)/i;
+
+        const parseKorpackRoster = (file) => {
+            const normHdr = (v) => (v == null ? '' : v.toString()).toLowerCase().replace(/[^a-z0-9]/g, '');
+            const isTruthyMark = (v) => {
+                const s = (v == null ? '' : v.toString()).trim().toLowerCase();
+                if (!s || s === ' ') return false;
+                return s === 'x' || s === 'xx' || s === 'yes' || s === 'y' || s === '1' || s === 'true' || s === '✓';
+            };
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array', cellDates: true });
+                        const people = [];       // upserts
+                        const inactiveNames = []; // {name, sheet, reason}
+                        const skipped = [];       // section labels / totals rows
+                        const seen = new Set();
+
+                        wb.SheetNames.forEach(sheetName => {
+                            const grid = XLSX.utils.sheet_to_json(wb.Sheets[sheetName], { header: 1, defval: '', raw: false, blankrows: false });
+                            if (!grid.length) return;
+
+                            // Exit lists: no header row, name in the first column.
+                            if (/ncns|terminat|decline/i.test(sheetName)) {
+                                grid.forEach(row => {
+                                    const nm = (row[0] == null ? '' : row[0].toString()).replace(/ /g, ' ').trim();
+                                    if (!nm || /^open positions/i.test(nm) || normHdr(nm) === 'employeename') return;
+                                    inactiveNames.push({ name: nm, sheet: sheetName.trim() });
+                                });
+                                return;
+                            }
+                            // Only the roster sheet(s) carry an "Employee Name" header.
+                            let headerRow = -1;
+                            for (let r = 0; r < Math.min(grid.length, 15); r++) {
+                                const cells = (grid[r] || []).map(normHdr);
+                                if (cells.some(c => c === 'employeename' || c === 'fullname' || c === 'associatename')) { headerRow = r; break; }
+                            }
+                            if (headerRow === -1) return;
+
+                            const headers = (grid[headerRow] || []).map(normHdr);
+                            const colOf = (opts) => {
+                                for (const o of opts) {
+                                    const i = headers.findIndex(h => h === normHdr(o));
+                                    if (i !== -1) return i;
+                                }
+                                for (const o of opts) {
+                                    const i = headers.findIndex(h => h && h.startsWith(normHdr(o)));
+                                    if (i !== -1) return i;
+                                }
+                                return -1;
+                            };
+                            const fieldCols = {};
+                            KORPACK_FIELD_MAP.forEach(f => { fieldCols[f.key] = colOf(f.match); });
+                            if (fieldCols.fullName === -1) return;
+                            // Any header that reads as a weekday is a scheduled-day column.
+                            const dayCols = [];
+                            headers.forEach((h, i) => {
+                                const dow = dowFromLabel(h);
+                                if (dow !== null && i !== fieldCols.fullName) dayCols.push({ col: i, dow });
+                            });
+                            // A name column alone isn't a roster — the pay-rate and
+                            // question-tracker tabs have one too. Require a column only
+                            // a roster carries.
+                            const looksLikeRoster = dayCols.length > 0
+                                || fieldCols.startDate !== -1
+                                || fieldCols.crmNumber !== -1
+                                || fieldCols.phone !== -1;
+                            if (!looksLikeRoster) return;
+
+                            for (let r = headerRow + 1; r < grid.length; r++) {
+                                const row = grid[r] || [];
+                                const rawName = (row[fieldCols.fullName] == null ? '' : row[fieldCols.fullName].toString())
+                                    .replace(/ /g, ' ').trim();
+                                if (!rawName) continue;
+                                // "**" / "*" suffixes are recruiter shorthand, not part of the name.
+                                const name = rawName.replace(/[*†‡]+\s*$/, '').trim();
+                                if (!name || normHdr(name) === 'employeename') continue;
+                                if (!/[a-z]/i.test(name)) continue;
+                                if (ROSTER_SECTION_MARKERS.test(name)) { skipped.push(name); continue; }
+
+                                const get = (key) => {
+                                    const c = fieldCols[key];
+                                    if (c === -1 || c === undefined) return '';
+                                    const v = row[c];
+                                    return (v == null ? '' : v.toString()).replace(/ /g, ' ').trim();
+                                };
+                                const crm = get('crmNumber').replace(/[^0-9]/g, '');
+                                const key = makeAssociateKey(crm, name);
+                                if (!key || seen.has(key)) continue;
+                                seen.add(key);
+
+                                const scheduledDays = dayCols
+                                    .filter(d => isTruthyMark(row[d.col]))
+                                    .map(d => d.dow);
+
+                                const startISO = toISODate(parseSheetDate(get('startDate')));
+                                people.push({
+                                    key,
+                                    crmNumber: crm,
+                                    fullName: name,
+                                    flagged: rawName !== name,     // the "**" marker from the sheet
+                                    startDate: startISO || '',
+                                    phone: get('phone'),
+                                    background: get('background'),
+                                    language: get('language'),
+                                    last4: get('last4'),
+                                    recruiter: get('recruiter'),
+                                    assigned: get('assigned'),
+                                    notes: get('notes'),
+                                    scheduledDays,
+                                    sourceSheet: sheetName.trim()
+                                });
+                            }
+                        });
+
+                        if (!people.length && !inactiveNames.length) {
+                            reject(new Error('No roster rows found. Expected a sheet with an "Employee Name" column.'));
+                            return;
+                        }
+                        resolve({ people, inactiveNames, skipped, fileName: file.name });
+                    } catch (err) {
+                        reject(new Error(`Could not read that file: ${err.message}`));
+                    }
+                };
+                reader.onerror = () => reject(new Error('Could not read that file.'));
+                reader.readAsArrayBuffer(file);
+            });
+        };
+
+        // Merge a parsed roster into the existing associate map. Existing records
+        // are updated in place (never replaced wholesale), so app-only fields —
+        // status, lastLine, profile notes — survive a re-upload. Repeated uploads
+        // in a day are therefore safe.
+        const mergeKorpackRoster = (currentRoster, parsed) => {
+            const updated = { ...(currentRoster || {}) };
+            // Existing records indexed by name so a row that gains a CRM number
+            // later still lands on the same person.
+            const byName = {};
+            Object.entries(updated).forEach(([k, a]) => {
+                const t = nameTokenKey(a.fullName || '');
+                if (t) byName[t] = k;
+            });
+
+            let created = 0, changed = 0, deactivated = 0;
+            const nowISO = new Date().toISOString();
+
+            parsed.people.forEach(p => {
+                const nameToken = nameTokenKey(p.fullName);
+                const existingKey = updated[p.key] ? p.key : (byName[nameToken] || null);
+                const prev = existingKey ? updated[existingKey] : null;
+                const targetKey = existingKey || p.key;
+                const sp = p.fullName.indexOf(' ');
+                const next = {
+                    ...(prev || {}),
+                    employeeId: (prev && prev.employeeId) || targetKey,
+                    fullName: p.fullName,
+                    firstName: sp !== -1 ? p.fullName.slice(0, sp) : p.fullName,
+                    lastName: sp !== -1 ? p.fullName.slice(sp + 1) : '',
+                    crmNumber: p.crmNumber || (prev && prev.crmNumber) || '',
+                    startDate: p.startDate || (prev && prev.startDate) || '',
+                    phone: p.phone || (prev && prev.phone) || '',
+                    background: p.background || (prev && prev.background) || '',
+                    language: p.language || (prev && prev.language) || '',
+                    last4: p.last4 || (prev && prev.last4) || '',
+                    recruiter: p.recruiter || (prev && prev.recruiter) || '',
+                    assigned: p.assigned || (prev && prev.assigned) || '',
+                    notes: p.notes || (prev && prev.notes) || '',
+                    scheduledDays: p.scheduledDays.length ? p.scheduledDays : ((prev && prev.scheduledDays) || []),
+                    // New people default to active; an existing person keeps the
+                    // status set in the app.
+                    status: (prev && prev.status) || 'active',
+                    source: 'korpack-roster'
+                };
+                next.isActive = next.status === 'active';
+                // Compare on content only — a fresh `updatedAt` would make every
+                // re-upload look like a change.
+                const sameAsBefore = prev && JSON.stringify({ ...prev, updatedAt: null }) === JSON.stringify({ ...next, updatedAt: null });
+                next.updatedAt = sameAsBefore ? prev.updatedAt : nowISO;
+                if (!prev) { created += 1; next.createdAt = nowISO; }
+                else if (!sameAsBefore) changed += 1;
+                updated[targetKey] = next;
+                if (nameToken) byName[nameToken] = targetKey;
+            });
+
+            // Exit sheets flip people inactive but never delete them.
+            parsed.inactiveNames.forEach(({ name, sheet }) => {
+                const t = nameTokenKey(name.replace(/[*†‡]+\s*$/, '').trim());
+                const key = t ? byName[t] : null;
+                if (!key || !updated[key]) return;
+                if (updated[key].status === 'inactive') return;
+                updated[key] = {
+                    ...updated[key],
+                    status: 'inactive',
+                    isActive: false,
+                    inactiveReason: sheet,
+                    updatedAt: nowISO
+                };
+                deactivated += 1;
+            });
+
+            return { updated, created, changed, deactivated, total: parsed.people.length, skipped: (parsed.skipped || []).length };
+        };
+
+        // ---- Scorecard ----
+        // Mirrors one week block of the Korpack scorecard: a day column per
+        // working day, a TOTALS column, and the KPI panel down the left. Rows
+        // the planner can derive (Required, Working, Variance, Daily Direct
+        // People, Daily Fill %, and by default New Starts / Lines Cut /
+        // Confirmed) fill themselves in; everything else is an editable field.
+        const SCORECARD_DEFAULTS = {
+            site: 'KORPACK',
+            shiftLabel: '1st',
+            workDays: [4, 5, 6, 0] // Thu, Fri, Sat, Sun
+        };
+
+        // id: storage key · label: as printed on the scorecard · derived: filled
+        // from the planner · manualOverride: derived but editable.
+        const SCORECARD_ROWS = [
+            { id: 'forecasted', label: 'Forecasted', kind: 'manual' },
+            { id: 'confirmed', label: 'Confirmed', kind: 'derived', overridable: true },
+            { id: 'required', label: 'Required', kind: 'derived', overridable: true },
+            { id: 'working', label: 'Working - Direct Only', kind: 'derived', overridable: true },
+            { id: 'variance', label: 'Variance', kind: 'computed', signed: true },
+            { id: 'dailyDirect', label: 'Daily Direct People', kind: 'computed' },
+            { id: 'dailyFill', label: 'Daily Fill %', kind: 'computed', percent: true },
+            { id: 'newStarts', label: 'New Starts', kind: 'derived', overridable: true },
+            { id: 'sentHome', label: 'Sent Home', kind: 'manual' },
+            { id: 'linesCut', label: 'Lines Cut', kind: 'derived', overridable: true },
+            { id: 'secondDayReturns', label: '2nd Day Returns', kind: 'manual' },
+            { id: 'surveysCompleted', label: 'Surveys Completed', kind: 'manual' },
+            { id: 'earlyLeaves', label: 'Early Leaves', kind: 'manual' },
+            { id: 'dnrs', label: 'DNRs', kind: 'manual' }
+        ];
+
+        const scorecardDayDates = (weekEndingISO, workDays) => {
+            const days = (workDays && workDays.length ? workDays : SCORECARD_DEFAULTS.workDays);
+            return weekDates(weekEndingISO).filter(iso => {
+                const d = parseSheetDate(iso);
+                return d && days.includes(d.getDay());
+            });
+        };
+
+        // Confirmations recorded for a date, counted across the week's attendance
+        // entries. This is the "how many said they'd come in" half of the
+        // confirmed-vs-showed metric.
+        const confirmedCountFor = (weekAttendance, isoDate) => {
+            const entries = (weekAttendance && weekAttendance.entries) || {};
+            let n = 0;
+            Object.values(entries).forEach(entry => {
+                const day = entry && entry.days && entry.days[isoDate];
+                if (day && day.confirmed) n += 1;
+            });
+            return n;
+        };
+
+        // One day column. `overrides` and `manual` come from the saved scorecard.
+        const buildScorecardDay = (isoDate, reports, weekAttendance, saved) => {
+            const totals = dayTotalsFromReports(reports, isoDate);
+            const overrides = (saved && saved.overrides && saved.overrides[isoDate]) || {};
+            const manual = (saved && saved.manual && saved.manual[isoDate]) || {};
+            const pick = (key, derivedValue) => {
+                const o = overrides[key];
+                return (o === undefined || o === null || o === '') ? derivedValue : Number(o);
+            };
+            const confirmed = confirmedCountFor(weekAttendance, isoDate);
+            // A day with no staffing sheet and no confirmations stays blank rather
+            // than reading as a zero — the same way the workbook leaves unworked
+            // days empty so they don't drag the averages down.
+            const hasAny = totals.hasData || confirmed > 0;
+            const derived = hasAny ? {
+                confirmed,
+                required: totals.required,
+                working: totals.working,
+                newStarts: totals.newStarts,
+                linesCut: totals.linesCut
+            } : { confirmed: null, required: null, working: null, newStarts: null, linesCut: null };
+            const values = {
+                confirmed: pick('confirmed', derived.confirmed),
+                required: pick('required', derived.required),
+                working: pick('working', derived.working),
+                newStarts: pick('newStarts', derived.newStarts),
+                linesCut: pick('linesCut', derived.linesCut)
+            };
+            SCORECARD_ROWS.filter(r => r.kind === 'manual').forEach(r => {
+                const v = manual[r.id];
+                values[r.id] = (v === undefined || v === null || v === '') ? null : Number(v);
+            });
+            values.variance = (values.working === null || values.required === null) ? null : values.working - values.required;
+            values.dailyDirect = values.working;
+            values.dailyFill = values.required > 0 ? Math.min(1, values.working / values.required) : null;
+            return { date: isoDate, hasData: totals.hasData, derived, overrides, values };
+        };
+
+        const buildScorecardWeek = (weekEndingISO, reports, weekAttendance, saved, settings) => {
+            const cfg = { ...SCORECARD_DEFAULTS, ...(settings || {}) };
+            const dates = scorecardDayDates(weekEndingISO, cfg.workDays);
+            const days = dates.map(iso => buildScorecardDay(iso, reports, weekAttendance, saved));
+            const sum = (key) => {
+                const nums = days.map(d => d.values[key]).filter(v => v !== null && v !== undefined && !isNaN(v));
+                return nums.length ? nums.reduce((a, b) => a + b, 0) : null;
+            };
+            const totals = {};
+            SCORECARD_ROWS.forEach(r => { totals[r.id] = sum(r.id); });
+            totals.variance = (totals.working === null || totals.required === null) ? null : totals.working - totals.required;
+            totals.dailyDirect = totals.working;
+            totals.dailyFill = totals.required ? Math.min(1, totals.working / totals.required) : null;
+
+            const directValues = days.map(d => d.values.dailyDirect).filter(v => v !== null && !isNaN(v));
+            const kpi = {
+                avgDailyPc: directValues.length ? directValues.reduce((a, b) => a + b, 0) / directValues.length : null,
+                overallFillRate: totals.confirmed ? Math.min(1, totals.working / totals.confirmed) : null,
+                shiftFillPct: totals.required ? totals.working / totals.required : null
+            };
+            return { weekEnding: weekEndingISO, site: cfg.site, shiftLabel: cfg.shiftLabel, dates, days, totals, kpi };
+        };
+
+        const fillPctClass = (v) => {
+            if (v === null || v === undefined || isNaN(v)) return '';
+            if (v >= 0.99) return 'sc-good';
+            if (v >= 0.95) return 'sc-warn';
+            return 'sc-bad';
+        };
+        const fmtPct = (v) => (v === null || v === undefined || isNaN(v)) ? '' : `${(v * 100).toFixed(1)}%`;
+        const fmtNum = (v, signed) => {
+            if (v === null || v === undefined || v === '' || isNaN(v)) return '';
+            const n = Math.round(v);
+            return signed && n > 0 ? `+${n}` : String(n);
+        };
+
+        // ---- Email prep ----
+        // Rebuilds the "Email HC Confirmation" table: one row per line with
+        // ORDERED / FILLED / NOT FILLED / Comments, then the totals row.
+        const EMAIL_DEFAULTS = {
+            recipients: '',
+            subjectTemplate: '{site} {day} {m}/{d} attendance',
+            site: 'Korpack'
+        };
+
+        const buildEmailPrep = (lines, isoDate, settings, extras) => {
+            const cfg = { ...EMAIL_DEFAULTS, ...(settings || {}) };
+            const d = parseSheetDate(isoDate) || new Date();
+            const rows = (lines || []).map(line => {
+                const needed = Math.max(0, parseInt(line.needed) || 0);
+                const filled = (line.positions || []).filter(p => (p.name || '').trim()).length;
+                const label = /^line/i.test((line.letter || '').trim())
+                    ? (line.letter || '').trim().toUpperCase()
+                    : `LINE ${(line.letter || '').trim()}`;
+                return {
+                    id: line.id,
+                    label,
+                    description: line.description || '',
+                    ordered: line.isCut ? 0 : needed,
+                    filled: line.isCut ? 0 : filled,
+                    notFilled: line.isCut ? 0 : Math.max(0, needed - filled),
+                    isCut: !!line.isCut,
+                    comment: line.isCut ? 'Line cut' : ''
+                };
+            });
+            const totals = rows.reduce((acc, r) => ({
+                ordered: acc.ordered + r.ordered,
+                filled: acc.filled + r.filled,
+                notFilled: acc.notFilled + r.notFilled
+            }), { ordered: 0, filled: 0, notFilled: 0 });
+            const subject = (cfg.subjectTemplate || EMAIL_DEFAULTS.subjectTemplate)
+                .replace(/\{site\}/g, cfg.site || '')
+                .replace(/\{day\}/g, DOW_LONG[d.getDay()].toLowerCase())
+                .replace(/\{Day\}/g, DOW_LONG[d.getDay()])
+                .replace(/\{m\}/g, String(d.getMonth() + 1))
+                .replace(/\{d\}/g, String(d.getDate()))
+                .replace(/\{date\}/g, isoDate);
+            return { rows, totals, subject, recipients: cfg.recipients || '', extras: extras || {} };
+        };
+
+        const emailPrepText = (prep) => {
+            const pad = (s, n) => (s + ' '.repeat(n)).slice(0, n);
+            const lines = [];
+            lines.push(`Total Headcount: ${prep.totals.filled}`);
+            lines.push('');
+            lines.push(`${pad('', 10)}${pad('', 30)}${pad('ORDERED', 9)}${pad('FILLED', 8)}${pad('NOT FILLED', 12)}Comments`);
+            prep.rows.forEach(r => {
+                lines.push(`${pad(r.label, 10)}${pad(r.description, 30)}${pad(String(r.ordered), 9)}${pad(String(r.filled), 8)}${pad(String(r.notFilled), 12)}${r.comment}`);
+            });
+            lines.push(`${pad('Total', 10)}${pad('', 30)}${pad(String(prep.totals.ordered), 9)}${pad(String(prep.totals.filled), 8)}${pad(String(prep.totals.notFilled), 12)}`);
+            if (prep.extras && prep.extras.confirmed !== undefined) {
+                lines.push('');
+                lines.push(`Confirmed: ${prep.extras.confirmed} · Showed: ${prep.extras.showed}` +
+                    (prep.extras.showRate !== null && prep.extras.showRate !== undefined ? ` (${fmtPct(prep.extras.showRate)} show rate)` : ''));
+            }
+            return lines.join('\n');
+        };
+
+        const emailPrepHtml = (prep) => {
+            const esc = (s) => (s == null ? '' : s.toString()).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+            const th = 'padding:4px 10px;border:1px solid #999;background:#e5e7eb;font-weight:700;text-align:left';
+            const td = 'padding:4px 10px;border:1px solid #999';
+            const rows = prep.rows.map(r => `<tr>
+  <td style="${td}"><b>${esc(r.label)}</b></td>
+  <td style="${td}">${esc(r.description)}</td>
+  <td style="${td};text-align:center">${r.ordered}</td>
+  <td style="${td};text-align:center">${r.filled}</td>
+  <td style="${td};text-align:center">${r.notFilled}</td>
+  <td style="${td}">${esc(r.comment)}</td>
+</tr>`).join('\n');
+            return `<p><b>Total Headcount: ${prep.totals.filled}</b></p>
+<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px">
+<tr><th style="${th}"></th><th style="${th}"></th><th style="${th}">ORDERED</th><th style="${th}">FILLED</th><th style="${th}">NOT FILLED</th><th style="${th}">Comments</th></tr>
+${rows}
+<tr><td style="${td}"><b>Total</b></td><td style="${td}"></td><td style="${td};text-align:center"><b>${prep.totals.ordered}</b></td><td style="${td};text-align:center"><b>${prep.totals.filled}</b></td><td style="${td};text-align:center"><b>${prep.totals.notFilled}</b></td><td style="${td}"></td></tr>
+</table>`;
+        };
+
         function App({ user }) {
             const [activeTab, setActiveTab] = useState('setup');
             const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
@@ -1857,6 +2724,15 @@
             // original creator/created time survives autosaves (which set() the whole node).
             const reportMetaRef = useRef({});
             const [roster, setRoster] = useState({});
+            // Saved staffing sheets, kept in state so Attendance and the
+            // Scorecard can derive who was placed and how many spots were filled.
+            const [staffingReports, setStaffingReports] = useState([]);
+            // Weekly attendance, keyed by week-ending (Sunday) ISO date.
+            const [attendance, setAttendance] = useState({});
+            // Weekly scorecard input, keyed the same way.
+            const [scorecards, setScorecards] = useState({});
+            const [scorecardSettings, setScorecardSettings] = useState(() => ({ ...SCORECARD_DEFAULTS, ...storage.load('scorecardSettings', {}) }));
+            const [emailSettings, setEmailSettings] = useState(() => ({ ...EMAIL_DEFAULTS, ...storage.load('emailSettings', {}) }));
 
             // Load roster from Firebase / localStorage
             useEffect(() => {
@@ -1891,6 +2767,154 @@
                     Object.entries(fields).forEach(([k, v]) => { patch[`roster/associates/${employeeId}/${k}`] = v; });
                     try { await db.ref('/').update(patch); } catch (e) { console.error('Error updating associate:', e); }
                 }
+            };
+
+            // ---- Attendance / scorecard / settings persistence ----
+            // Both nodes are small (a handful of rows per week), so they load
+            // whole and stay in state; writes are per-field patches so two
+            // people editing different weeks don't clobber each other.
+            useEffect(() => {
+                const loadWeeklyData = async () => {
+                    if (isFirebaseConfigured && db) {
+                        try {
+                            const [attSnap, scSnap, cfgSnap] = await Promise.all([
+                                db.ref('attendance').once('value'),
+                                db.ref('scorecard').once('value'),
+                                db.ref('settings/planner').once('value')
+                            ]);
+                            if (attSnap.exists()) { setAttendance(attSnap.val() || {}); storage.save('attendance', attSnap.val() || {}); }
+                            else setAttendance(storage.load('attendance', {}));
+                            if (scSnap.exists()) { setScorecards(scSnap.val() || {}); storage.save('scorecards', scSnap.val() || {}); }
+                            else setScorecards(storage.load('scorecards', {}));
+                            if (cfgSnap.exists()) {
+                                const cfg = cfgSnap.val() || {};
+                                if (cfg.scorecard) { setScorecardSettings(s => ({ ...s, ...cfg.scorecard })); storage.save('scorecardSettings', cfg.scorecard); }
+                                if (cfg.email) { setEmailSettings(s => ({ ...s, ...cfg.email })); storage.save('emailSettings', cfg.email); }
+                            }
+                            return;
+                        } catch (e) {
+                            console.error('Error loading attendance/scorecard:', e);
+                        }
+                    }
+                    setAttendance(storage.load('attendance', {}));
+                    setScorecards(storage.load('scorecards', {}));
+                };
+                loadWeeklyData();
+            }, []);
+
+            // Upsert the roster from an uploaded recruiting-roster workbook.
+            // Safe to run repeatedly in a day: existing people are updated in
+            // place and nobody is ever removed.
+            const handleRosterUpload = async (file) => {
+                const parsed = await parseKorpackRoster(file);
+                const result = mergeKorpackRoster(roster, parsed);
+                setRoster(result.updated);
+                storage.save('roster', result.updated);
+                const syncTime = new Date().toISOString();
+                storage.save('rosterLastSync', syncTime);
+                if (isFirebaseConfigured && db) {
+                    try {
+                        await db.ref('roster/associates').update(result.updated);
+                        await db.ref('roster/lastSync').set(syncTime);
+                    } catch (e) {
+                        console.error('Error saving roster upload:', e);
+                        throw new Error(`Parsed ${result.total} rows but the cloud save failed: ${e.message}`);
+                    }
+                }
+                logActivity('roster_uploaded', `${parsed.fileName} (${result.created} new, ${result.changed} updated, ${result.deactivated} deactivated)`);
+                return { ...result, fileName: parsed.fileName, syncTime };
+            };
+
+            // Status is the single switch that decides who reaches the staffing
+            // roster. `isActive` is kept in step for the older screens that read it.
+            const handleSetAssociateStatus = (employeeId, status) => {
+                handleUpdateAssociate(employeeId, { status, isActive: status === 'active', updatedAt: new Date().toISOString() });
+            };
+
+            const persistAttendanceWeek = (weekEnding, week) => {
+                setAttendance(prev => {
+                    const next = { ...prev, [weekEnding]: week };
+                    storage.save('attendance', next);
+                    return next;
+                });
+                if (isFirebaseConfigured && db) {
+                    db.ref(`attendance/${weekEnding}`).set(week)
+                      .catch(e => console.error('Error saving attendance:', e));
+                }
+            };
+
+            // Patch one associate's record for one day: status override, absence
+            // reason, or the confirmation flag.
+            const handleUpdateAttendanceDay = (weekEnding, assocKey, isoDate, patch) => {
+                const week = attendance[weekEnding] || { weekEnding, entries: {} };
+                const entry = (week.entries && week.entries[assocKey]) || { notes: '', days: {} };
+                const day = { ...((entry.days || {})[isoDate] || {}), ...patch };
+                // Clear empties so a blanked field doesn't linger as an override.
+                Object.keys(day).forEach(k => { if (day[k] === '' || day[k] === false) delete day[k]; });
+                const days = { ...(entry.days || {}) };
+                if (Object.keys(day).length) days[isoDate] = day; else delete days[isoDate];
+                persistAttendanceWeek(weekEnding, {
+                    ...week,
+                    weekEnding,
+                    entries: { ...(week.entries || {}), [assocKey]: { ...entry, days } },
+                    updatedAt: new Date().toISOString()
+                });
+            };
+
+            const handleUpdateAttendanceNotes = (weekEnding, assocKey, notes) => {
+                const week = attendance[weekEnding] || { weekEnding, entries: {} };
+                const entry = (week.entries && week.entries[assocKey]) || { notes: '', days: {} };
+                persistAttendanceWeek(weekEnding, {
+                    ...week,
+                    weekEnding,
+                    entries: { ...(week.entries || {}), [assocKey]: { ...entry, notes } },
+                    updatedAt: new Date().toISOString()
+                });
+            };
+
+            // `patch` is { manual: {date: {...}}, overrides: {date: {...}} } — merged
+            // per date so editing one cell doesn't drop the rest of the column.
+            const handleUpdateScorecard = (weekEnding, isoDate, group, field, value) => {
+                const card = scorecards[weekEnding] || { weekEnding, manual: {}, overrides: {} };
+                const bucket = { ...((card[group] || {})[isoDate] || {}) };
+                if (value === '' || value === null || value === undefined) delete bucket[field];
+                else bucket[field] = Number(value);
+                const nextCard = {
+                    ...card,
+                    weekEnding,
+                    [group]: { ...(card[group] || {}), [isoDate]: bucket },
+                    updatedAt: new Date().toISOString()
+                };
+                setScorecards(prev => {
+                    const next = { ...prev, [weekEnding]: nextCard };
+                    storage.save('scorecards', next);
+                    return next;
+                });
+                if (isFirebaseConfigured && db) {
+                    db.ref(`scorecard/${weekEnding}`).set(nextCard)
+                      .catch(e => console.error('Error saving scorecard:', e));
+                }
+            };
+
+            const handleSavePlannerSettings = (group, values) => {
+                if (group === 'scorecard') { setScorecardSettings(values); storage.save('scorecardSettings', values); }
+                else { setEmailSettings(values); storage.save('emailSettings', values); }
+                if (isFirebaseConfigured && db) {
+                    db.ref(`settings/planner/${group}`).set(values)
+                      .catch(e => console.error('Error saving planner settings:', e));
+                }
+            };
+
+            const placementIndex = React.useMemo(() => buildPlacementIndex(staffingReports), [staffingReports]);
+
+            // Active associates scheduled for a given date, in the shape the
+            // Roster panel's Load flow expects.
+            const activeRosterFor = (isoDate, ignoreSchedule) => {
+                return Object.entries(roster || {})
+                    .filter(([, a]) => isAssociateActive(a) && (a.fullName || '').trim())
+                    .filter(([, a]) => ignoreSchedule || !scheduledDowList(a).length || isScheduledOn(a, isoDate))
+                    .map(([key, a]) => ({ name: a.fullName.trim(), employeeId: a.employeeId || key }))
+                    .sort((a, b) => lastNameKey(a.name).localeCompare(lastNameKey(b.name)));
             };
 
             // Load core associates from Firebase and localStorage
@@ -2028,6 +3052,7 @@
                             const id = `${d.date}_${d.shift}`;
                             if (!seen.has(id)) { reportsList.push(d); seen.add(id); }
                         });
+                    setStaffingReports(reportsList);
                     setWorkHistoryIndex(buildWorkHistoryIndex(reportsList));
                 };
                 loadHistory();
@@ -2102,6 +3127,13 @@
                     updatedBy: actor,
                     updatedAt: now
                 };
+
+                // Keep the in-memory report list current so Attendance and the
+                // Scorecard reflect the sheet as it's being built, not just at load.
+                setStaffingReports(prev => {
+                    const rest = prev.filter(r => !(r.date === date && r.shift === shift));
+                    return [...rest, staffingData];
+                });
 
                 // Save to Firebase first if configured
                 if (isFirebaseConfigured && db) {
@@ -2446,7 +3478,9 @@
                             fullName: e.name,
                             firstName: sp !== -1 ? e.name.slice(0, sp) : e.name,
                             lastName: sp !== -1 ? e.name.slice(sp + 1) : '',
-                            isActive: true
+                            // Don't resurrect someone the Associates tab marked inactive.
+                            status: existing.status || 'active',
+                            isActive: existing.status ? existing.status === 'active' : true
                         };
                     });
                     setRoster(updated);
@@ -3125,6 +4159,24 @@
                                 Reports
                             </button>
                             <button
+                                className={`tab ${activeTab === 'associates' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('associates')}
+                            >
+                                Associates
+                            </button>
+                            <button
+                                className={`tab ${activeTab === 'attendance' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('attendance')}
+                            >
+                                Attendance
+                            </button>
+                            <button
+                                className={`tab ${activeTab === 'scorecard' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('scorecard')}
+                            >
+                                Scorecard
+                            </button>
+                            <button
                                 className={`tab ${activeTab === 'core' ? 'active' : ''}`}
                                 onClick={() => setActiveTab('core')}
                             >
@@ -3201,6 +4253,11 @@
                                 workHistoryIndex={workHistoryIndex}
                                 statusList={statusList}
                                 roster={roster}
+                                emailSettings={emailSettings}
+                                attendanceWeek={attendance[weekEndingOf(currentDate)] || null}
+                                placementIndex={placementIndex}
+                                activeRosterFor={activeRosterFor}
+                                onSaveSettings={handleSavePlannerSettings}
                             />
                         )}
 
@@ -3221,6 +4278,45 @@
 
                         {FEATURES.activity && activeTab === 'activity' && (
                             <ActivityView />
+                        )}
+
+                        {activeTab === 'associates' && (
+                            <AssociatesView
+                                roster={roster}
+                                attendance={attendance}
+                                placementIndex={placementIndex}
+                                onUploadRoster={handleRosterUpload}
+                                onSetStatus={handleSetAssociateStatus}
+                                onUpdateAssociate={handleUpdateAssociate}
+                                onUpdateAttendanceDay={handleUpdateAttendanceDay}
+                                onUpdateAttendanceNotes={handleUpdateAttendanceNotes}
+                                currentDate={currentDate}
+                                firebaseStatus={firebaseStatus}
+                            />
+                        )}
+
+                        {activeTab === 'attendance' && (
+                            <AttendanceView
+                                roster={roster}
+                                attendance={attendance}
+                                placementIndex={placementIndex}
+                                currentDate={currentDate}
+                                scorecardSettings={scorecardSettings}
+                                onUpdateAttendanceDay={handleUpdateAttendanceDay}
+                                onUpdateAttendanceNotes={handleUpdateAttendanceNotes}
+                            />
+                        )}
+
+                        {activeTab === 'scorecard' && (
+                            <ScorecardView
+                                staffingReports={staffingReports}
+                                attendance={attendance}
+                                scorecards={scorecards}
+                                scorecardSettings={scorecardSettings}
+                                currentDate={currentDate}
+                                onUpdateScorecard={handleUpdateScorecard}
+                                onSaveSettings={handleSavePlannerSettings}
+                            />
                         )}
 
                         {activeTab === 'core' && (
@@ -3514,7 +4610,12 @@
             statusNameIndex,
             workHistoryIndex,
             statusList,
-            roster
+            roster,
+            emailSettings,
+            attendanceWeek,
+            placementIndex,
+            activeRosterFor,
+            onSaveSettings
         }) {
             const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
             const [quickAddInput, setQuickAddInput] = useState('');
@@ -3532,10 +4633,14 @@
             const [lastFirst, setLastFirst] = useState(() => storage.load('nameDisplayLastFirst', false));
             const [showBadgeScan, setShowBadgeScan] = useState(false);
             const quickAddInputRef = useRef(null);
+            const [showEmailPrep, setShowEmailPrep] = useState(false);
+            // "From roster" load option: pull the active associates whose
+            // scheduled days include this date.
+            const [ignoreSchedule, setIgnoreSchedule] = useState(false);
 
             // ===== Load today's roster (spreadsheet upload or pasted list) =====
             const [isLoadRosterOpen, setIsLoadRosterOpen] = useState(false);
-            const [loadTab, setLoadTab] = useState('upload'); // 'upload' | 'paste'
+            const [loadTab, setLoadTab] = useState('roster'); // 'roster' | 'upload' | 'paste'
             const [pasteText, setPasteText] = useState('');
             const [parsedEntries, setParsedEntries] = useState(null); // [{name, employeeId}]
             const [loadError, setLoadError] = useState('');
@@ -3546,7 +4651,7 @@
                 setParsedEntries(null);
                 setPasteText('');
                 setLoadError('');
-                setLoadTab('upload');
+                setLoadTab('roster');
             };
 
             // Pull names (and employee IDs when present) out of an .xlsx/.csv file.
@@ -3852,6 +4957,14 @@
                             </button>
                             )}
                             <button
+                                className="btn btn-primary"
+                                onClick={() => setShowEmailPrep(true)}
+                                style={{ fontSize: '12px', padding: '6px 12px' }}
+                                title="Build today's headcount confirmation email from the board"
+                            >
+                                Email Prep
+                            </button>
+                            <button
                                 className={`btn ${lastFirst ? 'btn-primary' : 'btn-secondary'}`}
                                 onClick={toggleLastFirst}
                                 title="Toggle name display between First Last and Last, First"
@@ -4128,7 +5241,7 @@
                                 </div>
 
                                 <div style={{ display: 'flex', gap: '6px', marginBottom: '10px' }}>
-                                    {[['upload', 'Upload file'], ['paste', 'Paste names']].map(([id, label]) => (
+                                    {[['roster', 'From roster'], ['upload', 'Upload file'], ['paste', 'Paste names']].map(([id, label]) => (
                                         <button
                                             key={id}
                                             className={`btn btn-small ${loadTab === id ? 'btn-primary' : 'btn-secondary'}`}
@@ -4138,6 +5251,38 @@
                                         </button>
                                     ))}
                                 </div>
+
+                                {loadTab === 'roster' && (
+                                    <div>
+                                        <div style={{ fontSize: '12px', color: '#374151', marginBottom: '8px' }}>
+                                            Active associates scheduled for <strong>{formatShortDate(currentDate)}</strong>.
+                                            Inactive associates are never included.
+                                        </div>
+                                        <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                                            <input
+                                                type="checkbox"
+                                                checked={ignoreSchedule}
+                                                onChange={(e) => { setIgnoreSchedule(e.target.checked); setParsedEntries(null); }}
+                                            />
+                                            Include everyone active, whatever their scheduled days
+                                        </label>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => {
+                                                setLoadError('');
+                                                const entries = activeRosterFor ? activeRosterFor(currentDate, ignoreSchedule) : [];
+                                                if (!entries.length) {
+                                                    setLoadError('No active associates match. Upload the roster on the Associates tab, or tick the box above.');
+                                                    setParsedEntries(null);
+                                                    return;
+                                                }
+                                                setParsedEntries(entries);
+                                            }}
+                                        >
+                                            Pull from roster
+                                        </button>
+                                    </div>
+                                )}
 
                                 {loadTab === 'upload' && (
                                     <div>
@@ -4295,6 +5440,20 @@
                                 </div>
                             </div>
                         </div>
+                    )}
+
+                    {showEmailPrep && (
+                        <EmailPrepModal
+                            lines={lines}
+                            currentDate={currentDate}
+                            emailSettings={emailSettings}
+                            attendanceWeek={attendanceWeek}
+                            roster={roster}
+                            placementIndex={placementIndex}
+                            onUpdateLine={onUpdateLine}
+                            onSaveSettings={onSaveSettings}
+                            onClose={() => setShowEmailPrep(false)}
+                        />
                     )}
 
                     {showBadgeScan && (
@@ -7284,6 +8443,1128 @@
                     ref.child('loginCount').transaction((c) => (c || 0) + 1);
                 }
             }).catch((e) => console.error('recordUserSession failed:', e));
+        }
+
+
+        // Status is the first column on purpose: it's the switch that decides
+        // who lands on the staffing roster, mirroring the column the site added
+        // at A on the recruiting spreadsheet.
+        function AssociatesView({ roster, attendance, placementIndex, onUploadRoster, onSetStatus, onUpdateAssociate, onUpdateAttendanceDay, onUpdateAttendanceNotes, currentDate, firebaseStatus }) {
+            const [search, setSearch] = useState('');
+            const [statusFilter, setStatusFilter] = useState('active');
+            const [dayFilter, setDayFilter] = useState('all');
+            const [uploadStatus, setUploadStatus] = useState('');
+            const [uploadDetail, setUploadDetail] = useState(null);
+            const [openProfile, setOpenProfile] = useState(null); // associate key
+            const fileRef = useRef(null);
+
+            const handleFile = async (e) => {
+                const file = e.target.files && e.target.files[0];
+                if (!file) return;
+                e.target.value = '';
+                setUploadStatus('Parsing...');
+                setUploadDetail(null);
+                try {
+                    const res = await onUploadRoster(file);
+                    setUploadStatus('');
+                    setUploadDetail(res);
+                } catch (err) {
+                    setUploadStatus(`Error: ${err.message}`);
+                    setUploadDetail(null);
+                }
+            };
+
+            const entries = Object.entries(roster || {})
+                .filter(([, a]) => (a.fullName || '').trim())
+                .filter(([, a]) => {
+                    if (statusFilter === 'active' && !isAssociateActive(a)) return false;
+                    if (statusFilter === 'inactive' && isAssociateActive(a)) return false;
+                    return true;
+                })
+                .filter(([, a]) => {
+                    if (dayFilter === 'all') return true;
+                    return scheduledDowList(a).includes(Number(dayFilter));
+                })
+                .filter(([key, a]) => {
+                    const q = search.trim().toLowerCase();
+                    if (!q) return true;
+                    return (a.fullName || '').toLowerCase().includes(q)
+                        || String(a.crmNumber || '').includes(q)
+                        || String(a.employeeId || key).toLowerCase().includes(q)
+                        || (a.recruiter || '').toLowerCase().includes(q);
+                })
+                .sort(([, a], [, b]) => lastNameKey(a.fullName).localeCompare(lastNameKey(b.fullName)));
+
+            const all = Object.values(roster || {}).filter(a => (a.fullName || '').trim());
+            const activeCount = all.filter(isAssociateActive).length;
+
+            const profileAssoc = openProfile ? (roster || {})[openProfile] : null;
+
+            return (
+                <div className="panel-view">
+                    <div className="form-section" style={{ marginBottom: '16px' }}>
+                        <h3>Associate Roster</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', alignItems: 'center' }}>
+                            <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" onChange={handleFile} style={{ display: 'none' }} />
+                            <button className="btn btn-primary" onClick={() => fileRef.current && fileRef.current.click()}>
+                                Upload Roster Spreadsheet
+                            </button>
+                            <span className="quick-add-hint" style={{ margin: 0 }}>
+                                Reads the recruiting roster as-is — name, scheduled days, start date, CRM #, phone,
+                                background, language, recruiter and notes. Re-uploading updates the people already
+                                here and adds anyone new; nobody is ever deleted. NCNS / Terminate / Declines tabs
+                                flip those people to inactive.
+                            </span>
+                        </div>
+                        {uploadStatus && (
+                            <div style={{ marginTop: '10px', fontSize: '12px', fontWeight: 600, color: uploadStatus.startsWith('Error') ? '#991b1b' : '#374151' }}>
+                                {uploadStatus}
+                            </div>
+                        )}
+                        {uploadDetail && (
+                            <div style={{ marginTop: '10px', padding: '10px 12px', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '6px', fontSize: '12px', color: '#065f46' }}>
+                                <strong>{uploadDetail.fileName}</strong> — {uploadDetail.total} row{uploadDetail.total === 1 ? '' : 's'} read ·{' '}
+                                {uploadDetail.created} new · {uploadDetail.changed} updated
+                                {uploadDetail.deactivated > 0 && <> · {uploadDetail.deactivated} set inactive</>}
+                                {uploadDetail.skipped > 0 && <> · {uploadDetail.skipped} header/total row{uploadDetail.skipped === 1 ? '' : 's'} ignored</>}
+                                {firebaseStatus !== 'connected' && <> · saved locally (offline)</>}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="filter-controls">
+                        <div className="filter-row">
+                            <input
+                                className="search-box"
+                                style={{ maxWidth: '280px' }}
+                                placeholder="Search name, CRM #, recruiter..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <span className="filter-label">Status</span>
+                            <select value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)} style={{ padding: '6px 8px', fontSize: '12px', borderRadius: '6px', border: '1px solid #d1d5db' }}>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="all">All</option>
+                            </select>
+                            <span className="filter-label">Scheduled</span>
+                            <select value={dayFilter} onChange={(e) => setDayFilter(e.target.value)} style={{ padding: '6px 8px', fontSize: '12px', borderRadius: '6px', border: '1px solid #d1d5db' }}>
+                                <option value="all">Any day</option>
+                                {DOW_LABELS.map((lbl, i) => <option key={i} value={i}>{DOW_LONG[i]}</option>)}
+                            </select>
+                            <span style={{ marginLeft: 'auto', fontSize: '12px', color: '#6b7280' }}>
+                                {entries.length} shown · <strong style={{ color: '#059669' }}>{activeCount}</strong> active of {all.length}
+                            </span>
+                        </div>
+                    </div>
+
+                    {entries.length === 0 ? (
+                        <div className="empty-state">
+                            <h3>No associates yet</h3>
+                            <p>Upload the roster spreadsheet to get started.</p>
+                        </div>
+                    ) : (
+                        <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
+                            <div className="assoc-row assoc-head">
+                                <div className="assoc-status">Status</div>
+                                <div className="assoc-name">Name</div>
+                                <div className="assoc-days">Scheduled</div>
+                                <div className="assoc-cell">Start Date</div>
+                                <div className="assoc-cell">CRM #</div>
+                                <div className="assoc-cell">Phone</div>
+                                <div className="assoc-cell">Recruiter</div>
+                                <div className="assoc-actions"></div>
+                            </div>
+                            <div style={{ maxHeight: '58vh', overflowY: 'auto' }}>
+                                {entries.map(([key, a]) => (
+                                    <div key={key} className={`assoc-row ${isAssociateActive(a) ? '' : 'assoc-inactive'}`}>
+                                        <div className="assoc-status">
+                                            <select
+                                                className={`status-select ${isAssociateActive(a) ? 'is-active' : 'is-inactive'}`}
+                                                value={isAssociateActive(a) ? 'active' : 'inactive'}
+                                                onChange={(e) => onSetStatus(key, e.target.value)}
+                                            >
+                                                <option value="active">Active</option>
+                                                <option value="inactive">Inactive</option>
+                                            </select>
+                                        </div>
+                                        <div className="assoc-name">
+                                            <button className="link-btn" onClick={() => setOpenProfile(key)}>{a.fullName}</button>
+                                            {a.inactiveReason && !isAssociateActive(a) && (
+                                                <span className="flag-badge flag-low" style={{ marginLeft: '6px' }}>{a.inactiveReason}</span>
+                                            )}
+                                        </div>
+                                        <div className="assoc-days">
+                                            {DOW_LABELS.map((lbl, i) => (
+                                                <span key={i} className={`day-chip ${scheduledDowList(a).includes(i) ? 'on' : ''}`} title={DOW_LONG[i]}>{DOW_MINI[i]}</span>
+                                            ))}
+                                        </div>
+                                        <div className="assoc-cell">{a.startDate ? formatShortDate(a.startDate) : '—'}</div>
+                                        <div className="assoc-cell">{a.crmNumber || '—'}</div>
+                                        <div className="assoc-cell">{a.phone || '—'}</div>
+                                        <div className="assoc-cell">{a.recruiter || '—'}</div>
+                                        <div className="assoc-actions">
+                                            <button className="btn btn-secondary btn-small" onClick={() => setOpenProfile(key)}>Profile</button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {profileAssoc && (
+                        <AssociateProfile
+                            assocKey={openProfile}
+                            associate={profileAssoc}
+                            attendance={attendance}
+                            placementIndex={placementIndex}
+                            currentDate={currentDate}
+                            onUpdateAssociate={onUpdateAssociate}
+                            onSetStatus={onSetStatus}
+                            onUpdateAttendanceDay={onUpdateAttendanceDay}
+                            onUpdateAttendanceNotes={onUpdateAttendanceNotes}
+                            onClose={() => setOpenProfile(null)}
+                        />
+                    )}
+                </div>
+            );
+        }
+
+        // One associate's page: the details the recruiting sheet carries, the
+        // days they're scheduled for, and their attendance week by week.
+        function AssociateProfile({ assocKey, associate, attendance, placementIndex, currentDate, onUpdateAssociate, onSetStatus, onUpdateAttendanceDay, onUpdateAttendanceNotes, onClose }) {
+            const [draft, setDraft] = useState(associate);
+            const [weekEnding, setWeekEnding] = useState(() => weekEndingOf(currentDate || new Date()));
+
+            useEffect(() => { setDraft(associate); }, [associate]);
+
+            const setField = (field, value) => {
+                setDraft(d => ({ ...d, [field]: value }));
+            };
+            const commit = (field) => {
+                if ((associate[field] || '') === (draft[field] || '')) return;
+                onUpdateAssociate(assocKey, { [field]: draft[field] || '', updatedAt: new Date().toISOString() });
+            };
+            const toggleDay = (dow) => {
+                const cur = scheduledDowList(draft);
+                const next = cur.includes(dow) ? cur.filter(d => d !== dow) : [...cur, dow].sort();
+                setDraft(d => ({ ...d, scheduledDays: next }));
+                onUpdateAssociate(assocKey, { scheduledDays: next, updatedAt: new Date().toISOString() });
+            };
+
+            const week = attendance[weekEnding] || { entries: {} };
+            const entry = (week.entries && week.entries[assocKey]) || { notes: '', days: {} };
+            const dates = weekDates(weekEnding);
+
+            // Running totals across every week on file.
+            const history = React.useMemo(() => {
+                const tally = { present: 0, absent: 0, confirmed: 0, calloff: 0, ncns: 0, excused: 0, pto: 0 };
+                Object.keys(attendance || {}).forEach(wk => {
+                    const wkEntry = ((attendance[wk] || {}).entries || {})[assocKey];
+                    weekDates(wk).forEach(iso => {
+                        const res = resolveAttendance(associate, iso, placementIndex, wkEntry);
+                        if (res.status === 'present') tally.present += 1;
+                        else if (res.status === 'absent') {
+                            tally.absent += 1;
+                            if (res.reason && tally[res.reason] !== undefined) tally[res.reason] += 1;
+                        }
+                        if (res.confirmed) tally.confirmed += 1;
+                    });
+                });
+                return tally;
+            }, [attendance, associate, placementIndex, assocKey]);
+
+            const field = (label, key, type) => (
+                <div className="form-group">
+                    <label>{label}</label>
+                    <input
+                        type={type || 'text'}
+                        value={draft[key] || ''}
+                        onChange={(e) => setField(key, e.target.value)}
+                        onBlur={() => commit(key)}
+                    />
+                </div>
+            );
+
+            return (
+                <div className="quick-add-modal" onClick={onClose}>
+                    <div className="quick-add-content panel-view" style={{ maxWidth: '820px', width: '92%' }} onClick={(e) => e.stopPropagation()}>
+                        <div className="quick-add-header">
+                            <h3 className="quick-add-title">{associate.fullName}</h3>
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                                <select
+                                    className={`status-select ${isAssociateActive(associate) ? 'is-active' : 'is-inactive'}`}
+                                    value={isAssociateActive(associate) ? 'active' : 'inactive'}
+                                    onChange={(e) => onSetStatus(assocKey, e.target.value)}
+                                >
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                                <button className="btn btn-secondary btn-small" onClick={onClose}>×</button>
+                            </div>
+                        </div>
+
+                        <div className="form-grid" style={{ marginBottom: '4px' }}>
+                            {field('Start Date', 'startDate', 'date')}
+                            {field('CRM #', 'crmNumber')}
+                            {field('Phone', 'phone')}
+                            {field('Background', 'background')}
+                            {field('Language', 'language')}
+                            {field('Recruiter', 'recruiter')}
+                        </div>
+
+                        <div className="form-group" style={{ marginBottom: '12px' }}>
+                            <label>Scheduled Days</label>
+                            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                {DOW_LABELS.map((lbl, i) => (
+                                    <button
+                                        key={i}
+                                        className={`day-toggle ${scheduledDowList(draft).includes(i) ? 'on' : ''}`}
+                                        onClick={() => toggleDay(i)}
+                                        title={DOW_LONG[i]}
+                                    >
+                                        {lbl}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="form-group" style={{ marginBottom: '14px' }}>
+                            <label>Notes</label>
+                            <textarea
+                                rows={2}
+                                value={draft.notes || ''}
+                                onChange={(e) => setField('notes', e.target.value)}
+                                onBlur={() => commit('notes')}
+                            />
+                        </div>
+
+                        <div className="form-section" style={{ marginBottom: '0' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                                <h3 style={{ margin: 0 }}>Attendance</h3>
+                                <button className="btn btn-secondary btn-small" onClick={() => setWeekEnding(w => shiftWeek(w, -1))}>‹</button>
+                                <span style={{ fontSize: '12px', fontWeight: 700 }}>Week ending {formatShortDate(weekEnding)}</span>
+                                <button className="btn btn-secondary btn-small" onClick={() => setWeekEnding(w => shiftWeek(w, 1))}>›</button>
+                                <span style={{ marginLeft: 'auto', fontSize: '11px', color: '#6b7280' }}>
+                                    All-time: {history.present} present · {history.absent} absent
+                                    {history.ncns > 0 && <> · {history.ncns} NCNS</>}
+                                    {history.calloff > 0 && <> · {history.calloff} call-off</>}
+                                    {history.pto > 0 && <> · {history.pto} PTO</>}
+                                </span>
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '6px' }}>
+                                {dates.map(iso => {
+                                    const res = resolveAttendance(associate, iso, placementIndex, entry);
+                                    const d = parseSheetDate(iso);
+                                    return (
+                                        <div key={iso} className={`att-day att-${res.status || 'none'}`}>
+                                            <div className="att-day-label">{DOW_LABELS[d.getDay()]} {d.getMonth() + 1}/{d.getDate()}</div>
+                                            <select
+                                                value={res.status}
+                                                onChange={(e) => onUpdateAttendanceDay(weekEnding, assocKey, iso, { status: e.target.value })}
+                                            >
+                                                <option value="">—</option>
+                                                <option value="present">Present</option>
+                                                <option value="absent">Absent</option>
+                                            </select>
+                                            {res.status === 'absent' && (
+                                                <select
+                                                    value={res.reason}
+                                                    onChange={(e) => onUpdateAttendanceDay(weekEnding, assocKey, iso, { reason: e.target.value })}
+                                                >
+                                                    <option value="">Reason…</option>
+                                                    {ABSENCE_REASONS.map(r => <option key={r.id} value={r.id}>{r.label}</option>)}
+                                                </select>
+                                            )}
+                                            <label className="att-confirm">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={res.confirmed}
+                                                    onChange={(e) => onUpdateAttendanceDay(weekEnding, assocKey, iso, { confirmed: e.target.checked })}
+                                                />
+                                                confirmed
+                                            </label>
+                                            {res.placedOn && <div className="att-placed">Line {res.placedOn}</div>}
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            <div className="form-group" style={{ marginTop: '12px', marginBottom: 0 }}>
+                                <label>Notes for week ending {formatShortDate(weekEnding)}</label>
+                                <textarea
+                                    rows={2}
+                                    defaultValue={entry.notes || ''}
+                                    key={`${assocKey}-${weekEnding}`}
+                                    onBlur={(e) => onUpdateAttendanceNotes(weekEnding, assocKey, e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Weekly attendance. Present/absent is read off the saved staffing
+        // sheets — on a line means present, on the roster and scheduled but not
+        // placed means absent — and each cell can be overridden with the reason.
+        // The "C" box is the confirmation the site tracks with an X on the
+        // recruiting sheet; confirmed-vs-showed is summarised at the top.
+        function AttendanceView({ roster, attendance, placementIndex, currentDate, scorecardSettings, onUpdateAttendanceDay, onUpdateAttendanceNotes }) {
+            const [weekEnding, setWeekEnding] = useState(() => weekEndingOf(currentDate || new Date()));
+            const [search, setSearch] = useState('');
+            const [scope, setScope] = useState('scheduled'); // 'scheduled' | 'active' | 'all'
+            const [onlyIssues, setOnlyIssues] = useState(false);
+
+            const workDays = (scorecardSettings && scorecardSettings.workDays) || SCORECARD_DEFAULTS.workDays;
+            const allDates = weekDates(weekEnding);
+            const dates = allDates.filter(iso => {
+                const d = parseSheetDate(iso);
+                return d && workDays.includes(d.getDay());
+            });
+            const shownDates = dates.length ? dates : allDates;
+
+            const week = attendance[weekEnding] || { entries: {} };
+            const entryFor = (key) => (week.entries && week.entries[key]) || { notes: '', days: {} };
+
+            const people = Object.entries(roster || {})
+                .filter(([, a]) => (a.fullName || '').trim())
+                .filter(([, a]) => scope === 'all' ? true : isAssociateActive(a))
+                .filter(([, a]) => {
+                    if (scope !== 'scheduled') return true;
+                    // Anyone who actually worked a day this week belongs on the
+                    // sheet whatever their scheduled days say.
+                    const worked = shownDates.some(iso =>
+                        placementIndex[iso] && placementIndex[iso][normalizeName(a.fullName || '')]);
+                    if (worked) return true;
+                    const days = scheduledDowList(a);
+                    if (!days.length) return false;
+                    return shownDates.some(iso => isScheduledOn(a, iso));
+                })
+                .filter(([, a]) => {
+                    const q = search.trim().toLowerCase();
+                    return !q || (a.fullName || '').toLowerCase().includes(q);
+                })
+                .sort(([, a], [, b]) => lastNameKey(a.fullName).localeCompare(lastNameKey(b.fullName)));
+
+            const rows = people.map(([key, a]) => {
+                const entry = entryFor(key);
+                const days = shownDates.map(iso => ({ iso, ...resolveAttendance(a, iso, placementIndex, entry) }));
+                return { key, assoc: a, entry, days };
+            }).filter(r => !onlyIssues || r.days.some(d => d.status === 'absent'));
+
+            // Confirmed vs showed, the metric the X-and-highlight system on the
+            // spreadsheet was standing in for.
+            const metrics = shownDates.map(iso => {
+                let confirmed = 0, present = 0, absent = 0, confirmedNoShow = 0;
+                people.forEach(([key, a]) => {
+                    const res = resolveAttendance(a, iso, placementIndex, entryFor(key));
+                    if (res.confirmed) confirmed += 1;
+                    if (res.status === 'present') present += 1;
+                    if (res.status === 'absent') {
+                        absent += 1;
+                        if (res.confirmed) confirmedNoShow += 1;
+                    }
+                });
+                return { iso, confirmed, present, absent, confirmedNoShow, showRate: confirmed ? present / confirmed : null };
+            });
+            const weekTotals = metrics.reduce((acc, m) => ({
+                confirmed: acc.confirmed + m.confirmed,
+                present: acc.present + m.present,
+                absent: acc.absent + m.absent,
+                confirmedNoShow: acc.confirmedNoShow + m.confirmedNoShow
+            }), { confirmed: 0, present: 0, absent: 0, confirmedNoShow: 0 });
+            const weekShowRate = weekTotals.confirmed ? weekTotals.present / weekTotals.confirmed : null;
+
+            const exportWeek = () => {
+                const header = ['Associate', 'Status'];
+                shownDates.forEach(iso => {
+                    const d = parseSheetDate(iso);
+                    header.push(`${DOW_LABELS[d.getDay()]} ${d.getMonth() + 1}/${d.getDate()} Confirmed`);
+                    header.push(`${DOW_LABELS[d.getDay()]} ${d.getMonth() + 1}/${d.getDate()}`);
+                });
+                header.push('Present', 'Absent', 'Notes');
+                const aoa = [[`Attendance — week ending ${weekEnding}`], [], header];
+                rows.forEach(r => {
+                    const line = [r.assoc.fullName, isAssociateActive(r.assoc) ? 'Active' : 'Inactive'];
+                    let p = 0, ab = 0;
+                    r.days.forEach(d => {
+                        line.push(d.confirmed ? 'X' : '');
+                        if (d.status === 'present') { line.push('Present'); p += 1; }
+                        else if (d.status === 'absent') { line.push(reasonLabel(d.reason) || 'Absent'); ab += 1; }
+                        else line.push('');
+                    });
+                    line.push(p, ab, r.entry.notes || '');
+                    aoa.push(line);
+                });
+                aoa.push([]);
+                aoa.push(['Totals', '', ...shownDates.flatMap((iso, i) => [metrics[i].confirmed, metrics[i].present])]);
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(aoa);
+                ws['!cols'] = [{ wch: 30 }, { wch: 10 }, ...shownDates.flatMap(() => [{ wch: 12 }, { wch: 14 }]), { wch: 9 }, { wch: 9 }, { wch: 40 }];
+                XLSX.utils.book_append_sheet(wb, ws, 'Attendance');
+                XLSX.writeFile(wb, `attendance-week-ending-${weekEnding}.xlsx`);
+            };
+
+            return (
+                <div className="panel-view">
+                    <div className="filter-controls">
+                        <div className="filter-row">
+                            <button className="btn btn-secondary btn-small" onClick={() => setWeekEnding(w => shiftWeek(w, -1))}>‹ Prev</button>
+                            <input
+                                type="date"
+                                value={weekEnding}
+                                onChange={(e) => setWeekEnding(weekEndingOf(e.target.value))}
+                                style={{ padding: '6px 8px', fontSize: '12px', borderRadius: '6px', border: '1px solid #d1d5db' }}
+                                title="Any date in the week — it snaps to that week's Sunday"
+                            />
+                            <button className="btn btn-secondary btn-small" onClick={() => setWeekEnding(w => shiftWeek(w, 1))}>Next ›</button>
+                            <span style={{ fontSize: '12px', fontWeight: 700, color: '#374151' }}>Week ending {formatShortDate(weekEnding)}</span>
+                            <input
+                                className="search-box"
+                                style={{ maxWidth: '200px' }}
+                                placeholder="Search name..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            <select value={scope} onChange={(e) => setScope(e.target.value)} style={{ padding: '6px 8px', fontSize: '12px', borderRadius: '6px', border: '1px solid #d1d5db' }}>
+                                <option value="scheduled">Scheduled this week</option>
+                                <option value="active">All active</option>
+                                <option value="all">Everyone</option>
+                            </select>
+                            <label style={{ fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                <input type="checkbox" checked={onlyIssues} onChange={(e) => setOnlyIssues(e.target.checked)} />
+                                Absences only
+                            </label>
+                            <button className="btn btn-secondary btn-small" style={{ marginLeft: 'auto' }} onClick={exportWeek} disabled={!rows.length}>
+                                Export Week
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="metric-strip">
+                        <div className="metric-card">
+                            <div className="metric-label">Confirmed</div>
+                            <div className="metric-value">{weekTotals.confirmed}</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-label">Showed</div>
+                            <div className="metric-value" style={{ color: '#059669' }}>{weekTotals.present}</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-label">Show rate</div>
+                            <div className={`metric-value ${fillPctClass(weekShowRate)}`}>{weekShowRate === null ? '—' : fmtPct(weekShowRate)}</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-label">Confirmed no-shows</div>
+                            <div className="metric-value" style={{ color: '#b91c1c' }}>{weekTotals.confirmedNoShow}</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-label">Absences</div>
+                            <div className="metric-value">{weekTotals.absent}</div>
+                        </div>
+                    </div>
+
+                    {rows.length === 0 ? (
+                        <div className="empty-state">
+                            <h3>Nobody to show</h3>
+                            <p>Upload the roster on the Associates tab, or widen the filter above.</p>
+                        </div>
+                    ) : (
+                        <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'auto', maxHeight: '60vh' }}>
+                            <table className="att-table">
+                                <thead>
+                                    <tr>
+                                        <th className="att-sticky">Associate</th>
+                                        {shownDates.map((iso, i) => {
+                                            const d = parseSheetDate(iso);
+                                            return (
+                                                <th key={iso} colSpan={2}>
+                                                    {DOW_LABELS[d.getDay()]} {d.getMonth() + 1}/{d.getDate()}
+                                                    <div className="att-th-sub">{metrics[i].confirmed} conf · {metrics[i].present} in</div>
+                                                </th>
+                                            );
+                                        })}
+                                        <th style={{ minWidth: '220px' }}>Notes (week)</th>
+                                    </tr>
+                                    <tr className="att-subhead">
+                                        <th className="att-sticky"></th>
+                                        {shownDates.map(iso => (
+                                            <React.Fragment key={iso}>
+                                                <th title="Confirmed they'll attend">C</th>
+                                                <th>Attendance</th>
+                                            </React.Fragment>
+                                        ))}
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {rows.map(r => (
+                                        <tr key={r.key}>
+                                            <td className="att-sticky att-name">
+                                                {r.assoc.fullName}
+                                                {!isAssociateActive(r.assoc) && <span className="flag-badge flag-low" style={{ marginLeft: '6px' }}>Inactive</span>}
+                                            </td>
+                                            {r.days.map(d => (
+                                                <React.Fragment key={d.iso}>
+                                                    <td className="att-confirm-cell">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={d.confirmed}
+                                                            onChange={(e) => onUpdateAttendanceDay(weekEnding, r.key, d.iso, { confirmed: e.target.checked })}
+                                                            title={d.confirmed ? 'Confirmed' : 'Not confirmed'}
+                                                        />
+                                                    </td>
+                                                    <td className={`att-cell att-${d.status || 'none'}`}>
+                                                        {d.status === 'present' ? (
+                                                            <span className="att-present-tag" title={d.placedOn ? `Line ${d.placedOn}` : 'Placed on a line'}>
+                                                                Present{d.placedOn ? ` · ${d.placedOn}` : ''}
+                                                            </span>
+                                                        ) : d.status === 'absent' ? (
+                                                            <select
+                                                                className="att-reason"
+                                                                value={d.reason}
+                                                                onChange={(e) => onUpdateAttendanceDay(weekEnding, r.key, d.iso, { reason: e.target.value })}
+                                                            >
+                                                                <option value="">Absent</option>
+                                                                {ABSENCE_REASONS.map(x => <option key={x.id} value={x.id}>{x.label}</option>)}
+                                                            </select>
+                                                        ) : (
+                                                            <span className="att-off">off</span>
+                                                        )}
+                                                        <button
+                                                            className="att-flip"
+                                                            title={d.overridden ? 'Clear the manual override' : (d.status === 'present' ? 'Mark absent' : 'Mark present')}
+                                                            onClick={() => onUpdateAttendanceDay(weekEnding, r.key, d.iso, {
+                                                                status: d.overridden ? '' : (d.status === 'present' ? 'absent' : 'present')
+                                                            })}
+                                                        >
+                                                            {d.overridden ? '↺' : '⇄'}
+                                                        </button>
+                                                    </td>
+                                                </React.Fragment>
+                                            ))}
+                                            <td>
+                                                <input
+                                                    className="att-notes"
+                                                    defaultValue={r.entry.notes || ''}
+                                                    key={`${r.key}-${weekEnding}`}
+                                                    placeholder="Notes for this week..."
+                                                    onBlur={(e) => onUpdateAttendanceNotes(weekEnding, r.key, e.target.value)}
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+
+                    <div className="quick-add-hint" style={{ marginTop: '10px' }}>
+                        Attendance follows the staffing sheets: on a line that day means present, scheduled but not
+                        placed means absent. Use ⇄ to override a day by hand and ↺ to hand it back to the sheet.
+                    </div>
+                </div>
+            );
+        }
+
+        // The Korpack scorecard week block, filled from the planner. Shaded
+        // cells are derived (and can still be typed over); white cells are the
+        // ones the tool can't know and stay editable.
+        function ScorecardView({ staffingReports, attendance, scorecards, scorecardSettings, currentDate, onUpdateScorecard, onSaveSettings }) {
+            const [weekEnding, setWeekEnding] = useState(() => weekEndingOf(currentDate || new Date()));
+            const [showSettings, setShowSettings] = useState(false);
+            const [settingsDraft, setSettingsDraft] = useState(scorecardSettings);
+
+            useEffect(() => { setSettingsDraft(scorecardSettings); }, [scorecardSettings]);
+
+            const saved = scorecards[weekEnding] || null;
+            const weekAtt = attendance[weekEnding] || null;
+            const week = React.useMemo(
+                () => buildScorecardWeek(weekEnding, staffingReports, weekAtt, saved, scorecardSettings),
+                [weekEnding, staffingReports, weekAtt, saved, scorecardSettings]
+            );
+
+            const cellValue = (row, day) => {
+                if (row.kind === 'manual') {
+                    const v = (saved && saved.manual && saved.manual[day.date] || {})[row.id];
+                    return v === undefined || v === null ? '' : v;
+                }
+                const o = (day.overrides || {})[row.id];
+                return o === undefined || o === null ? '' : o;
+            };
+
+            // Lays the week out exactly like one block of the Korpack workbook:
+            // KPI panel in A/B, row labels in C, a column per day in D..G and the
+            // week total in H, with the same blank spacer rows. Percentages go out
+            // as real numbers with a percent format so Excel can do arithmetic on
+            // them.
+            const exportScorecard = () => {
+                const dayLabel = (iso) => {
+                    const d = parseSheetDate(iso);
+                    return `${DOW_LABELS[d.getDay()]} ${d.getMonth() + 1}/${d.getDate()}`;
+                };
+                const rowById = (id) => SCORECARD_ROWS.find(r => r.id === id);
+                const blank = (v) => (v === null || v === undefined || isNaN(v)) ? '' : v;
+                const metricRow = (id) => {
+                    const row = rowById(id);
+                    return [
+                        ...week.days.map(d => blank(d.values[id])),
+                        blank(week.totals[id])
+                    ].map(v => (v === '' ? '' : (row.percent ? v : Math.round(v))));
+                };
+                const width = 4 + week.days.length; // A,B,C + days + totals
+                const pad = (row) => { while (row.length < width) row.push(''); return row; };
+
+                // [A, B, C, ...days, total] — the blank rows are the workbook's own.
+                const aoa = [
+                    pad([week.site, '', formatShortDate(week.weekEnding), ...week.dates.map(dayLabel), 'TOTALS']),
+                    pad(['', '', 'Shift', ...week.days.map(() => week.shiftLabel), 'Week']),
+                    pad(['AVG. DAILY PC', '', 'Forecasted', ...metricRow('forecasted')]),
+                    pad([blank(week.kpi.avgDailyPc), '', 'Confirmed', ...metricRow('confirmed')]),
+                    pad(['', '', 'Required', ...metricRow('required')]),
+                    pad(['OVERALL FILL RATE', '', 'Working - Direct Only', ...metricRow('working')]),
+                    pad([blank(week.kpi.overallFillRate), '', 'Variance', ...metricRow('variance')]),
+                    pad([]),
+                    pad([`${(week.shiftLabel || '1st').toUpperCase()} SHIFT FILL %`, '', 'Daily Direct People', ...metricRow('dailyDirect')]),
+                    pad([blank(week.kpi.shiftFillPct), '', 'Daily Fill %', ...metricRow('dailyFill')]),
+                    pad([]),
+                    pad(['', '', 'New Starts', ...metricRow('newStarts')]),
+                    pad(['', '', 'Sent Home', ...metricRow('sentHome')]),
+                    pad(['', '', 'Lines Cut', ...metricRow('linesCut')]),
+                    pad(['', '', '2nd Day Returns', ...metricRow('secondDayReturns')]),
+                    pad([]),
+                    pad(['', '', 'Surveys Completed', ...metricRow('surveysCompleted')]),
+                    pad(['', '', 'Early Leaves', ...metricRow('earlyLeaves')]),
+                    pad(['', '', 'DNRs', ...metricRow('dnrs')])
+                ];
+
+                const wb = XLSX.utils.book_new();
+                const ws = XLSX.utils.aoa_to_sheet(aoa);
+                ws['!cols'] = [{ wch: 18 }, { wch: 10 }, { wch: 24 }, ...week.days.map(() => ({ wch: 11 })), { wch: 13 }];
+                ws['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: 1 } }];
+
+                // Number formats + the fill-rate colouring, mirroring the workbook.
+                const fmt = (r, c, z, style) => {
+                    const a = XLSX.utils.encode_cell({ r, c });
+                    if (!ws[a] || ws[a].v === '') return;
+                    ws[a].z = z;
+                    if (style) ws[a].s = { ...(ws[a].s || {}), ...style };
+                };
+                const pctColor = (v) => {
+                    if (v === null || v === undefined || isNaN(v)) return null;
+                    if (v >= 0.99) return { font: { color: { rgb: '047857' }, bold: true } };
+                    if (v >= 0.95) return { font: { color: { rgb: 'B45309' }, bold: true } };
+                    return { font: { color: { rgb: 'B91C1C' }, bold: true } };
+                };
+                fmt(3, 0, '0.0');                                  // AVG. DAILY PC
+                fmt(6, 0, '0.0%', pctColor(week.kpi.overallFillRate));
+                fmt(9, 0, '0.0%', pctColor(week.kpi.shiftFillPct));
+                // Daily Fill % row (index 9) across the day columns and the total.
+                week.days.forEach((d, i) => fmt(9, 3 + i, '0.0%', pctColor(d.values.dailyFill)));
+                fmt(9, 3 + week.days.length, '0.0%', pctColor(week.totals.dailyFill));
+                // Variance keeps the workbook's red-negative format.
+                for (let c = 3; c <= 3 + week.days.length; c++) fmt(6, c, '0;[Red]-0');
+                // Bold the header row and the totals column.
+                for (let c = 0; c < width; c++) fmt(0, c, 'General', { font: { bold: true } });
+                for (let r = 2; r < aoa.length; r++) fmt(r, width - 1, ws[XLSX.utils.encode_cell({ r, c: width - 1 })]?.z || 'General', { font: { bold: true } });
+
+                XLSX.utils.book_append_sheet(wb, ws, 'Scorecard');
+
+                // A flat sheet as well, so the numbers can be pivoted or pasted
+                // into the master workbook without re-typing.
+                const flatHeader = ['Week_Ending', 'Date', 'Day', 'Shift', 'Avg_Daily_PC', 'Overall_Fill_Rate', '1st_Shift_Fill_Pct',
+                    ...SCORECARD_ROWS.map(r => r.label)];
+                const flat = [flatHeader];
+                week.days.forEach(d => {
+                    const dt = parseSheetDate(d.date);
+                    flat.push([
+                        week.weekEnding, d.date, DOW_LONG[dt.getDay()], week.shiftLabel,
+                        blank(week.kpi.avgDailyPc), blank(week.kpi.overallFillRate), blank(week.kpi.shiftFillPct),
+                        ...SCORECARD_ROWS.map(r => blank(d.values[r.id]))
+                    ]);
+                });
+                const wsFlat = XLSX.utils.aoa_to_sheet(flat);
+                wsFlat['!cols'] = flatHeader.map(h => ({ wch: Math.max(12, h.length + 2) }));
+                XLSX.utils.book_append_sheet(wb, wsFlat, 'Scorecard_Flat');
+                XLSX.writeFile(wb, `scorecard-week-ending-${week.weekEnding}.xlsx`);
+            };
+
+            const exportCsv = () => {
+                const rows = [['Week Ending', 'Date', 'Day', 'Shift', ...SCORECARD_ROWS.map(r => r.label)]];
+                week.days.forEach(d => {
+                    const dt = parseSheetDate(d.date);
+                    rows.push([week.weekEnding, d.date, DOW_LONG[dt.getDay()], week.shiftLabel,
+                        ...SCORECARD_ROWS.map(r => {
+                            const v = d.values[r.id];
+                            return v === null || v === undefined ? '' : (r.percent ? (v * 100).toFixed(1) + '%' : v);
+                        })]);
+                });
+                const csv = rows.map(r => r.map(c => {
+                    const s = c === null || c === undefined ? '' : String(c);
+                    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+                }).join(',')).join('\n');
+                const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = `scorecard-week-ending-${week.weekEnding}.csv`;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                setTimeout(() => URL.revokeObjectURL(url), 1500);
+            };
+
+            const kpiRow = (label, value, cls) => (
+                <div className="sc-kpi">
+                    <div className="sc-kpi-label">{label}</div>
+                    <div className={`sc-kpi-value ${cls || ''}`}>{value}</div>
+                </div>
+            );
+
+            return (
+                <div className="panel-view">
+                    <div className="filter-controls">
+                        <div className="filter-row">
+                            <button className="btn btn-secondary btn-small" onClick={() => setWeekEnding(w => shiftWeek(w, -1))}>‹ Prev</button>
+                            <input
+                                type="date"
+                                value={weekEnding}
+                                onChange={(e) => setWeekEnding(weekEndingOf(e.target.value))}
+                                style={{ padding: '6px 8px', fontSize: '12px', borderRadius: '6px', border: '1px solid #d1d5db' }}
+                            />
+                            <button className="btn btn-secondary btn-small" onClick={() => setWeekEnding(w => shiftWeek(w, 1))}>Next ›</button>
+                            <span style={{ fontSize: '12px', fontWeight: 700, color: '#374151' }}>Week ending {formatShortDate(weekEnding)}</span>
+                            <button className="btn btn-secondary btn-small" onClick={() => setShowSettings(s => !s)}>
+                                {showSettings ? 'Hide setup' : 'Setup'}
+                            </button>
+                            <div style={{ marginLeft: 'auto', display: 'flex', gap: '8px' }}>
+                                <button className="btn btn-secondary btn-small" onClick={exportCsv}>Export CSV</button>
+                                <button className="btn btn-primary btn-small" onClick={exportScorecard}>Export XLSX</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {showSettings && (
+                        <div className="form-section" style={{ marginBottom: '16px' }}>
+                            <h3>Scorecard Setup</h3>
+                            <div className="form-grid">
+                                <div className="form-group">
+                                    <label>Account / Site</label>
+                                    <input value={settingsDraft.site || ''} onChange={(e) => setSettingsDraft(s => ({ ...s, site: e.target.value }))} />
+                                </div>
+                                <div className="form-group">
+                                    <label>Shift label</label>
+                                    <input value={settingsDraft.shiftLabel || ''} onChange={(e) => setSettingsDraft(s => ({ ...s, shiftLabel: e.target.value }))} />
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <label>Days tracked (the day columns on each week block)</label>
+                                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                    {DOW_LABELS.map((lbl, i) => {
+                                        const on = (settingsDraft.workDays || []).includes(i);
+                                        return (
+                                            <button
+                                                key={i}
+                                                className={`day-toggle ${on ? 'on' : ''}`}
+                                                onClick={() => setSettingsDraft(s => {
+                                                    const cur = s.workDays || [];
+                                                    return { ...s, workDays: on ? cur.filter(d => d !== i) : [...cur, i].sort((a, b) => ((a + 6) % 7) - ((b + 6) % 7)) };
+                                                })}
+                                            >
+                                                {lbl}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                            <button className="btn btn-success btn-small" onClick={() => { onSaveSettings('scorecard', settingsDraft); setShowSettings(false); }}>
+                                Save setup
+                            </button>
+                        </div>
+                    )}
+
+                    <div className="sc-block">
+                        <div className="sc-kpi-panel">
+                            <div className="sc-site">{week.site}</div>
+                            {kpiRow('AVG. DAILY PC', week.kpi.avgDailyPc === null ? '—' : week.kpi.avgDailyPc.toFixed(1))}
+                            {kpiRow('OVERALL FILL RATE', week.kpi.overallFillRate === null ? '—' : fmtPct(week.kpi.overallFillRate), fillPctClass(week.kpi.overallFillRate))}
+                            {kpiRow(`${(week.shiftLabel || '1st').toUpperCase()} SHIFT FILL %`, week.kpi.shiftFillPct === null ? '—' : fmtPct(week.kpi.shiftFillPct), fillPctClass(week.kpi.shiftFillPct))}
+                            <div className="sc-kpi-note">
+                                Overall fill rate is working ÷ confirmed. Shift fill % is working ÷ required.
+                            </div>
+                        </div>
+
+                        <div className="sc-table-wrap">
+                            <table className="sc-table">
+                                <thead>
+                                    <tr>
+                                        <th className="sc-rowlabel">Week ending {formatShortDate(week.weekEnding)}</th>
+                                        {week.days.map(d => {
+                                            const dt = parseSheetDate(d.date);
+                                            return <th key={d.date}>{DOW_LABELS[dt.getDay()]} {dt.getMonth() + 1}/{dt.getDate()}</th>;
+                                        })}
+                                        <th className="sc-total-col">TOTALS</th>
+                                    </tr>
+                                    <tr className="sc-subhead">
+                                        <th className="sc-rowlabel">Shift</th>
+                                        {week.days.map(d => <th key={d.date}>{week.shiftLabel}</th>)}
+                                        <th className="sc-total-col">Week</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {SCORECARD_ROWS.map(row => (
+                                        <tr key={row.id} className={row.kind === 'computed' ? 'sc-computed-row' : ''}>
+                                            <td className="sc-rowlabel">
+                                                {row.label}
+                                                {row.kind === 'derived' && <span className="sc-tag" title="Filled in from the staffing sheets — type over it to override">auto</span>}
+                                                {row.kind === 'computed' && <span className="sc-tag sc-tag-calc" title="Calculated">calc</span>}
+                                            </td>
+                                            {week.days.map(day => {
+                                                const v = day.values[row.id];
+                                                if (row.kind === 'computed') {
+                                                    return (
+                                                        <td key={day.date} className={`sc-calc ${row.percent ? fillPctClass(v) : ''}`}>
+                                                            {row.percent ? (v === null ? '' : fmtPct(v))
+                                                                : fmtNum(v, row.signed)}
+                                                        </td>
+                                                    );
+                                                }
+                                                const derivedValue = row.kind === 'derived' ? day.derived[row.id] : null;
+                                                const stored = cellValue(row, day);
+                                                const overridden = row.kind === 'derived' && stored !== '';
+                                                // A derived cell shows the number it worked out; typing
+                                                // replaces it with an override and ↺ hands it back.
+                                                const shown = row.kind === 'derived' && !overridden
+                                                    ? (derivedValue === null || derivedValue === undefined ? '' : derivedValue)
+                                                    : stored;
+                                                return (
+                                                    <td key={day.date} className={row.kind === 'derived' ? 'sc-derived' : 'sc-manual'}>
+                                                        <div className="sc-cell">
+                                                            <input
+                                                                type="number"
+                                                                className={overridden ? 'sc-overridden' : ''}
+                                                                value={shown}
+                                                                onChange={(e) => onUpdateScorecard(
+                                                                    week.weekEnding, day.date,
+                                                                    row.kind === 'derived' ? 'overrides' : 'manual',
+                                                                    row.id, e.target.value
+                                                                )}
+                                                                title={row.kind === 'derived'
+                                                                    ? `From the staffing sheets${derivedValue === null || derivedValue === undefined ? ' (no sheet saved for this day yet)' : `: ${derivedValue}`}. Type a number to override.`
+                                                                    : 'Enter a number'}
+                                                            />
+                                                            {overridden && (
+                                                                <button
+                                                                    className="sc-reset"
+                                                                    title={`Overridden. Go back to ${derivedValue === null || derivedValue === undefined ? 'blank' : derivedValue} from the staffing sheets.`}
+                                                                    onClick={() => onUpdateScorecard(week.weekEnding, day.date, 'overrides', row.id, '')}
+                                                                >
+                                                                    ↺
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    </td>
+                                                );
+                                            })}
+                                            <td className="sc-total-col">
+                                                {row.percent ? fmtPct(week.totals[row.id]) : fmtNum(week.totals[row.id], row.signed)}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div className="quick-add-hint" style={{ marginTop: '12px' }}>
+                        <strong>Required</strong> is every spot created on the day's lines, <strong>Working - Direct Only</strong> is
+                        how many were filled, and <strong>Confirmed</strong> counts the confirmations logged on the Attendance tab.
+                        New Starts and Lines Cut come from the sheet too. Anything the planner can't see —
+                        Forecasted, Sent Home, 2nd Day Returns, Surveys, Early Leaves and DNRs — stays an editable field.
+                    </div>
+                </div>
+            );
+        }
+
+        // Builds the daily headcount-confirmation email off the live board,
+        // following the layout of the "Email HC Confirmation" tab: total
+        // headcount, then ORDERED / FILLED / NOT FILLED / Comments per line.
+        function EmailPrepModal({ lines, currentDate, emailSettings, attendanceWeek, roster, placementIndex, onUpdateLine, onSaveSettings, onClose }) {
+            const [settingsDraft, setSettingsDraft] = useState(emailSettings);
+            const [showSettings, setShowSettings] = useState(!(emailSettings && emailSettings.recipients));
+            const [comments, setComments] = useState({}); // lineId -> one-off comment
+            const [copied, setCopied] = useState('');
+
+            // Confirmed vs showed for the day, so the email can carry the metric.
+            const extras = React.useMemo(() => {
+                const entries = (attendanceWeek && attendanceWeek.entries) || {};
+                let confirmed = 0, showed = 0;
+                Object.entries(roster || {}).forEach(([key, a]) => {
+                    if (!(a.fullName || '').trim()) return;
+                    const res = resolveAttendance(a, currentDate, placementIndex, entries[key]);
+                    if (res.confirmed) confirmed += 1;
+                    if (res.status === 'present') showed += 1;
+                });
+                return { confirmed, showed, showRate: confirmed ? showed / confirmed : null };
+            }, [attendanceWeek, roster, placementIndex, currentDate]);
+
+            const prep = React.useMemo(() => {
+                const base = buildEmailPrep(lines, currentDate, settingsDraft, extras);
+                return {
+                    ...base,
+                    rows: base.rows.map(r => ({ ...r, comment: comments[r.id] !== undefined ? comments[r.id] : r.comment }))
+                };
+            }, [lines, currentDate, settingsDraft, comments, extras]);
+
+            const bodyText = emailPrepText(prep);
+
+            // The body is copied as rich HTML where the browser allows it, so the
+            // table lands in Outlook as a table rather than as runs of spaces.
+            const copy = async (what, text, html) => {
+                try {
+                    if (html && typeof ClipboardItem !== 'undefined' && navigator.clipboard && navigator.clipboard.write) {
+                        await navigator.clipboard.write([new ClipboardItem({
+                            'text/html': new Blob([html], { type: 'text/html' }),
+                            'text/plain': new Blob([text], { type: 'text/plain' })
+                        })]);
+                    } else {
+                        await navigator.clipboard.writeText(text);
+                    }
+                    setCopied(what);
+                    setTimeout(() => setCopied(''), 2000);
+                } catch (e) {
+                    // Clipboard API needs a secure context; fall back to selecting.
+                    setCopied('failed');
+                    setTimeout(() => setCopied(''), 3000);
+                }
+            };
+
+            const openInMail = () => {
+                const url = `mailto:${encodeURIComponent(prep.recipients)}?subject=${encodeURIComponent(prep.subject)}&body=${encodeURIComponent(bodyText)}`;
+                window.location.href = url;
+            };
+
+            return (
+                <div className="quick-add-modal" onClick={onClose}>
+                    <div className="quick-add-content panel-view" style={{ maxWidth: '860px', width: '94%' }} onClick={(e) => e.stopPropagation()}>
+                        <div className="quick-add-header">
+                            <h3 className="quick-add-title">Email Prep — {formatShortDate(currentDate)}</h3>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                                <button className="btn btn-secondary btn-small" onClick={() => setShowSettings(s => !s)}>
+                                    {showSettings ? 'Hide recipients' : 'Recipients'}
+                                </button>
+                                <button className="btn btn-secondary btn-small" onClick={onClose}>×</button>
+                            </div>
+                        </div>
+
+                        {showSettings && (
+                            <div className="form-section" style={{ marginBottom: '12px' }}>
+                                <div className="form-group">
+                                    <label>To</label>
+                                    <textarea
+                                        rows={2}
+                                        value={settingsDraft.recipients || ''}
+                                        placeholder="Name &lt;name@company.com&gt;; Name &lt;name@company.com&gt;"
+                                        onChange={(e) => setSettingsDraft(s => ({ ...s, recipients: e.target.value }))}
+                                    />
+                                </div>
+                                <div className="form-grid">
+                                    <div className="form-group">
+                                        <label>Site</label>
+                                        <input value={settingsDraft.site || ''} onChange={(e) => setSettingsDraft(s => ({ ...s, site: e.target.value }))} />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Subject template</label>
+                                        <input
+                                            value={settingsDraft.subjectTemplate || ''}
+                                            onChange={(e) => setSettingsDraft(s => ({ ...s, subjectTemplate: e.target.value }))}
+                                            title="{site} {day} {m}/{d} — {date} for the ISO date"
+                                        />
+                                    </div>
+                                </div>
+                                <button className="btn btn-success btn-small" onClick={() => { onSaveSettings('email', settingsDraft); setShowSettings(false); }}>
+                                    Save as default
+                                </button>
+                            </div>
+                        )}
+
+                        <div className="email-meta">
+                            <div><span className="email-meta-label">To</span> {prep.recipients || <em style={{ color: '#9ca3af' }}>set recipients above</em>}</div>
+                            <div><span className="email-meta-label">Subject</span> {prep.subject}</div>
+                        </div>
+
+                        <div className="email-total">Total Headcount: {prep.totals.filled}</div>
+
+                        <div style={{ maxHeight: '38vh', overflowY: 'auto', border: '1px solid #e5e7eb', borderRadius: '6px' }}>
+                            <table className="email-table">
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: '90px' }}></th>
+                                        <th>Description</th>
+                                        <th style={{ width: '80px' }}>ORDERED</th>
+                                        <th style={{ width: '70px' }}>FILLED</th>
+                                        <th style={{ width: '90px' }}>NOT FILLED</th>
+                                        <th style={{ width: '200px' }}>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {prep.rows.map(r => (
+                                        <tr key={r.id} className={r.isCut ? 'email-cut' : ''}>
+                                            <td><strong>{r.label}</strong></td>
+                                            <td>
+                                                <input
+                                                    defaultValue={r.description}
+                                                    placeholder="e.g. Chomps - Auto"
+                                                    onBlur={(e) => onUpdateLine(r.id, { description: e.target.value })}
+                                                    title="Saved on the line, so it carries over to the next email"
+                                                />
+                                            </td>
+                                            <td className="email-num">{r.ordered}</td>
+                                            <td className="email-num">{r.filled}</td>
+                                            <td className={`email-num ${r.notFilled > 0 ? 'email-short' : ''}`}>{r.notFilled}</td>
+                                            <td>
+                                                <input
+                                                    value={comments[r.id] !== undefined ? comments[r.id] : r.comment}
+                                                    onChange={(e) => setComments(c => ({ ...c, [r.id]: e.target.value }))}
+                                                />
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    <tr className="email-totals-row">
+                                        <td><strong>Total</strong></td>
+                                        <td></td>
+                                        <td className="email-num">{prep.totals.ordered}</td>
+                                        <td className="email-num">{prep.totals.filled}</td>
+                                        <td className="email-num">{prep.totals.notFilled}</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className="email-extras">
+                            Confirmed <strong>{extras.confirmed}</strong> · Showed <strong>{extras.showed}</strong>
+                            {extras.showRate !== null && <> · <span className={fillPctClass(extras.showRate)}>{fmtPct(extras.showRate)} show rate</span></>}
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end', marginTop: '14px', flexWrap: 'wrap' }}>
+                            {copied && (
+                                <span style={{ marginRight: 'auto', fontSize: '12px', fontWeight: 600, color: copied === 'failed' ? '#991b1b' : '#059669' }}>
+                                    {copied === 'failed' ? 'Copy failed — select the text and copy manually.' : `Copied ${copied} ✓`}
+                                </span>
+                            )}
+                            <button className="btn btn-secondary" onClick={() => copy('subject', prep.subject)}>Copy Subject</button>
+                            <button className="btn btn-secondary" onClick={() => copy('recipients', prep.recipients)} disabled={!prep.recipients}>Copy To</button>
+                            <button className="btn btn-secondary" onClick={() => copy('table', bodyText, emailPrepHtml(prep))}>Copy Body</button>
+                            <button className="btn btn-success" onClick={openInMail}>Open in Mail</button>
+                        </div>
+
+                        <details style={{ marginTop: '10px' }}>
+                            <summary style={{ cursor: 'pointer', fontSize: '12px', color: '#6b7280' }}>Plain-text preview</summary>
+                            <pre className="email-preview">{bodyText}</pre>
+                        </details>
+                    </div>
+                </div>
+            );
         }
 
         function LoginScreen() {
