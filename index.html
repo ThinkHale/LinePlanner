@@ -2155,6 +2155,17 @@
             return token ? `N-${token}` : '';
         };
 
+        // A Status column on the sheet (the dropdown in column A) is the site's
+        // own wording, so accept the obvious spellings. Anything unrecognised —
+        // including a blank cell — returns '' and leaves the status alone.
+        const parseStatusCell = (v) => {
+            const s = (v == null ? '' : v.toString()).trim().toLowerCase();
+            if (!s) return '';
+            if (/^(active|a|yes|y|1|true|working)$/.test(s)) return 'active';
+            if (/^(inactive|in-active|i|no|n|0|false|termed|terminated|ncns|declined|do not return|dnr)$/.test(s)) return 'inactive';
+            return '';
+        };
+
         const isAssociateActive = (a) => {
             if (!a) return false;
             if (a.status) return a.status === 'active';
@@ -2165,8 +2176,23 @@
         // survives a change in day labels.
         const scheduledDowList = (a) => {
             const raw = (a && a.scheduledDays) || [];
-            const list = Array.isArray(raw) ? raw : Object.keys(raw).filter(k => raw[k]);
-            return list.map(v => (typeof v === 'number' ? v : dowFromLabel(v))).filter(v => v !== null && v !== undefined);
+            // Tolerate every shape this can arrive in: a plain array from the app,
+            // a numeric-key object (how the Realtime Database hands back a sparse
+            // array), or a {fri: true} flag map from an external writer.
+            let list;
+            if (Array.isArray(raw)) list = raw;
+            else if (raw && typeof raw === 'object') {
+                const keys = Object.keys(raw);
+                list = keys.every(k => typeof raw[k] === 'boolean')
+                    ? keys.filter(k => raw[k])
+                    : keys.map(k => raw[k]);
+            } else list = [];
+            return list.map(v => {
+                if (typeof v === 'number') return v;
+                const s = (v == null ? '' : v.toString()).trim();
+                if (/^[0-6]$/.test(s)) return Number(s);
+                return dowFromLabel(s);
+            }).filter(v => v !== null && v !== undefined);
         };
         const isScheduledOn = (a, isoDate) => {
             const days = scheduledDowList(a);
@@ -2277,6 +2303,7 @@
         // named for exits (NCNS / Terminate / Declines) are read as name-only
         // lists and flip those people to inactive.
         const KORPACK_FIELD_MAP = [
+            { key: 'status', match: ['status', 'associatestatus', 'rosterstatus'] },
             { key: 'fullName', match: ['employeename', 'associatename', 'fullname', 'name'] },
             { key: 'startDate', match: ['startdate', 'start'] },
             { key: 'phone', match: ['phonenumber', 'phone', 'cell', 'mobile'] },
@@ -2379,6 +2406,7 @@
                                     return (v == null ? '' : v.toString()).replace(/ /g, ' ').trim();
                                 };
                                 const crm = get('crmNumber').replace(/[^0-9]/g, '');
+                                const sheetStatus = parseStatusCell(get('status'));
                                 const key = makeAssociateKey(crm, name);
                                 if (!key || seen.has(key)) continue;
                                 seen.add(key);
@@ -2392,6 +2420,7 @@
                                     key,
                                     crmNumber: crm,
                                     fullName: name,
+                                    sheetStatus,
                                     flagged: rawName !== name,     // the "**" marker from the sheet
                                     startDate: startISO || '',
                                     phone: get('phone'),
@@ -2425,6 +2454,14 @@
         // are updated in place (never replaced wholesale), so app-only fields —
         // status, lastLine, profile notes — survive a re-upload. Repeated uploads
         // in a day are therefore safe.
+        // Two associate records hold the same information. `updatedAt` and `source`
+        // are provenance rather than data — ignoring them keeps a re-upload that
+        // changes nothing from reading as a change, including an upload run over
+        // records the Power Automate sync wrote.
+        const sameAssociate = (a, b) =>
+            JSON.stringify({ ...a, updatedAt: null, source: null }) ===
+            JSON.stringify({ ...b, updatedAt: null, source: null });
+
         const mergeKorpackRoster = (currentRoster, parsed) => {
             const updated = { ...(currentRoster || {}) };
             // Existing records indexed by name so a row that gains a CRM number
@@ -2435,7 +2472,10 @@
                 if (t) byName[t] = k;
             });
 
-            let created = 0, changed = 0, deactivated = 0;
+            // The state before this upload. Every comparison below is against
+            // this snapshot, not against the half-merged result — a name listed
+            // twice on the sheet would otherwise churn on every run.
+            const original = { ...(currentRoster || {}) };
             const nowISO = new Date().toISOString();
 
             parsed.people.forEach(p => {
@@ -2460,27 +2500,35 @@
                     assigned: p.assigned || (prev && prev.assigned) || '',
                     notes: p.notes || (prev && prev.notes) || '',
                     scheduledDays: p.scheduledDays.length ? p.scheduledDays : ((prev && prev.scheduledDays) || []),
-                    // New people default to active; an existing person keeps the
-                    // status set in the app.
-                    status: (prev && prev.status) || 'active',
+                    // A Status column on the sheet wins — that dropdown is the
+                    // point of having it. With no such column the sheet has no
+                    // opinion, so an existing person keeps the status set in the
+                    // app and a new one starts active.
+                    status: p.sheetStatus || (prev && prev.status) || 'active',
                     source: 'korpack-roster'
                 };
                 next.isActive = next.status === 'active';
                 // Compare on content only — a fresh `updatedAt` would make every
                 // re-upload look like a change.
-                const sameAsBefore = prev && JSON.stringify({ ...prev, updatedAt: null }) === JSON.stringify({ ...next, updatedAt: null });
-                next.updatedAt = sameAsBefore ? prev.updatedAt : nowISO;
-                if (!prev) { created += 1; next.createdAt = nowISO; }
-                else if (!sameAsBefore) changed += 1;
+                const before = original[targetKey];
+                const sameAsBefore = before && sameAssociate(before, next);
+                next.updatedAt = sameAsBefore ? before.updatedAt : nowISO;
+                if (!prev) next.createdAt = next.createdAt || nowISO;
                 updated[targetKey] = next;
                 if (nameToken) byName[nameToken] = targetKey;
             });
 
-            // Exit sheets flip people inactive but never delete them.
+            // Exit sheets flip people inactive but never delete them. Someone the
+            // roster explicitly marks Active in its Status column is left alone —
+            // that dropdown is a deliberate call and outranks a stale exit tab.
+            const explicitlyActive = new Set(
+                parsed.people.filter(p => p.sheetStatus === 'active').map(p => nameTokenKey(p.fullName))
+            );
             parsed.inactiveNames.forEach(({ name, sheet }) => {
                 const t = nameTokenKey(name.replace(/[*†‡]+\s*$/, '').trim());
                 const key = t ? byName[t] : null;
                 if (!key || !updated[key]) return;
+                if (t && explicitlyActive.has(t)) return;
                 if (updated[key].status === 'inactive') return;
                 updated[key] = {
                     ...updated[key],
@@ -2489,7 +2537,23 @@
                     inactiveReason: sheet,
                     updatedAt: nowISO
                 };
-                deactivated += 1;
+            });
+
+            // Count from the snapshot so the summary reflects what actually moved.
+            let created = 0, changed = 0, deactivated = 0;
+            Object.keys(updated).forEach(k => {
+                const before = original[k];
+                const nowInactive = !isAssociateActive(updated[k]);
+                if (!before) {
+                    created += 1;
+                    // A new person who arrives already inactive — off an exit tab
+                    // or straight from the Status column — is worth calling out.
+                    if (nowInactive) deactivated += 1;
+                    return;
+                }
+                if (sameAssociate(before, updated[k])) return;
+                changed += 1;
+                if (isAssociateActive(before) && nowInactive) deactivated += 1;
             });
 
             return { updated, created, changed, deactivated, total: parsed.people.length, skipped: (parsed.skipped || []).length };

@@ -49,6 +49,10 @@ recruiting roster workbook as it stands — no reformatting first:
 
 - The header row is found by scanning for **Employee Name**, so the title and leads
   lines above it don't matter.
+- A **Status** column (the Active/Inactive dropdown in column A) sets each person's
+  status. `Active`/`Yes`/`Y`/`1` read as active; `Inactive`/`Termed`/`No`/`0` and the
+  like read as inactive; a blank cell leaves the status alone. With no such column the
+  sheet has no opinion and the status set in the app is kept.
 - Day columns (`THUR`, `FRI`, `SAT`, `SUN`, and any other weekday spelling) become that
   person's **scheduled days**. An `x` in the cell counts.
 - `Start Date`, `Phone Number`, `CRM #`, `Background`, `language`, `last 4 SSN`,
@@ -57,6 +61,9 @@ recruiting roster workbook as it stands — no reformatting first:
   `UNDER(-)/OVER`, `Pending I-9`, …) are skipped, and the summary says how many.
 - Tabs named for exits — **NCNS**, **Terminate**, **Declines** — are read as name-only
   lists and flip those people to inactive.
+
+A `Status` column saying `Active` also outranks a stale entry on an exit tab — the
+dropdown is the deliberate call.
 
 Re-uploading is safe and is the expected way to work: people already on file are updated
 in place, new people are added, and **nobody is ever deleted**. Upload it once or a dozen
@@ -67,8 +74,12 @@ gains a CRM number later still lands on the same person.
 
 The first column is a **status** dropdown, Active or Inactive. It is the switch that
 decides who reaches the staffing roster: the Roster panel's **From roster** option only
-pulls active associates. A status set here survives re-uploads — the spreadsheet never
-un-deactivates someone.
+pulls active associates.
+
+Status can be driven from either end. Set it here and it sticks, unless the spreadsheet
+has its own `Status` column — then the sheet is the source of truth and wins on the next
+upload or sync. Keeping the dropdown in the spreadsheet is the arrangement
+[the Power Automate sync](docs/power-automate-sync.md) is built around.
 
 ### Profile
 
@@ -159,6 +170,17 @@ const FEATURES = {
 `rosterAdmin` also controls the two **Scan Badge** buttons on the Staffing screen.
 
 The code for these pages is still present, so turning a flag on is all that's needed.
+
+## Automating the roster sync
+
+`docs/power-automate-sync.md` is a build-ready Power Automate flow that pushes the
+spreadsheet into the tool whenever the workbook is saved, so switching someone's Column A
+dropdown to **Active** reaches the tool without anyone opening it. It writes the same
+fields into the same place as the manual upload, so both paths stay usable.
+
+It needs a premium Power Automate licence (the HTTP connector) and a dedicated Firebase
+sign-in for the flow. The doc covers setup, every expression, testing, and the gaps —
+chief among them that the flow keys on CRM number, so rows without one are skipped.
 
 ## Firebase
 
