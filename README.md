@@ -79,11 +79,18 @@ week with an all-time tally at the top.
 ## Attendance
 
 The **Attendance** tab is one week at a time, keyed by the week ending (Sunday).
-Present/absent comes off the saved staffing sheets rather than being typed in:
+Present/absent comes off the saved staffing sheets rather than being typed in. A day is
+only worked out once a staffing sheet exists for it — until then it stays blank, so an
+upcoming week doesn't read the roster's scheduled-days pattern as a wall of absences:
 
-- On a line that day → **present**
-- Scheduled that day but not placed → **absent**
-- Not scheduled → blank
+- No staffing sheet saved for that day yet → blank (`—`), and the column header says
+  *no sheet*
+- Sheet saved, on a line that day → **present**
+- Sheet saved, scheduled that day but not placed → **absent**
+- Sheet saved, not scheduled → `off`
+
+Confirmations and hand-set overrides work on any day, sheet or no sheet, so you can log
+who confirmed and record a known PTO day before the shift is built.
 
 Use ⇄ on a cell to override it by hand and ↺ to hand it back to the sheet. Absences take
 a reason — **Call-Off**, **NCNS**, **Excused** or **PTO** — and every associate has a

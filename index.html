@@ -1518,6 +1518,8 @@
         .att-cell.att-none { background: #fafafa; }
         .att-present-tag { font-weight: 700; color: #047857; font-size: 11px; }
         .att-off { color: #9ca3af; font-style: italic; font-size: 11px; }
+        .att-pending { color: #c4c8cf; font-size: 12px; }
+        .att-nosheet { color: #9ca3af; font-style: italic; }
         .att-reason { font-size: 11px; padding: 2px 4px; border: 1px solid #fecaca; border-radius: 4px; background: white; color: #991b1b; font-weight: 600; }
         .att-flip {
             margin-left: 4px;
@@ -2202,6 +2204,9 @@
 
         // ---- Placements: who was on a line, per date, across saved shifts ----
         // { '2026-09-19': { 'jane doe': { letter, shift, isNew } } }
+        // A date gets an entry as soon as any sheet is saved for it, even one with
+        // nobody placed yet — so `isoDate in index` answers "is there a staffing
+        // sheet to reconcile this day against?".
         const buildPlacementIndex = (reports) => {
             const idx = {};
             (reports || []).forEach(r => {
@@ -2244,11 +2249,14 @@
         // not on a line => absent; anything else => not scheduled (blank).
         const resolveAttendance = (assoc, isoDate, placements, entry) => {
             const dayRec = (entry && entry.days && entry.days[isoDate]) || {};
-            const placed = placements && placements[isoDate]
-                ? placements[isoDate][normalizeName(assoc.fullName || '')]
-                : null;
+            const dayPlacements = placements ? placements[isoDate] : null;
+            const reported = !!dayPlacements;
+            const placed = dayPlacements ? dayPlacements[normalizeName(assoc.fullName || '')] : null;
             let status = dayRec.status || '';
-            if (!status) {
+            // Nothing is derived until there's a sheet to reconcile the day
+            // against. Otherwise the scheduled-days pattern from the roster would
+            // read as an absence every week, before anyone has worked the day.
+            if (!status && reported) {
                 if (placed) status = 'present';
                 else if (isScheduledOn(assoc, isoDate) && isAssociateActive(assoc)) status = 'absent';
             }
@@ -2258,7 +2266,8 @@
                 confirmed: !!dayRec.confirmed,
                 overridden: !!dayRec.status,
                 placedOn: placed ? placed.letter : '',
-                scheduled: isScheduledOn(assoc, isoDate)
+                scheduled: isScheduledOn(assoc, isoDate),
+                reported
             };
         };
 
@@ -8786,6 +8795,9 @@ ${rows}
                                                 confirmed
                                             </label>
                                             {res.placedOn && <div className="att-placed">Line {res.placedOn}</div>}
+                                            {!res.reported && res.scheduled && (
+                                                <div className="att-nosheet" style={{ fontSize: '10px' }}>no sheet yet</div>
+                                            )}
                                         </div>
                                     );
                                 })}
@@ -8857,6 +8869,7 @@ ${rows}
             // Confirmed vs showed, the metric the X-and-highlight system on the
             // spreadsheet was standing in for.
             const metrics = shownDates.map(iso => {
+                const reported = !!placementIndex[iso];
                 let confirmed = 0, present = 0, absent = 0, confirmedNoShow = 0;
                 people.forEach(([key, a]) => {
                     const res = resolveAttendance(a, iso, placementIndex, entryFor(key));
@@ -8867,7 +8880,7 @@ ${rows}
                         if (res.confirmed) confirmedNoShow += 1;
                     }
                 });
-                return { iso, confirmed, present, absent, confirmedNoShow, showRate: confirmed ? present / confirmed : null };
+                return { iso, reported, confirmed, present, absent, confirmedNoShow, showRate: confirmed ? present / confirmed : null };
             });
             const weekTotals = metrics.reduce((acc, m) => ({
                 confirmed: acc.confirmed + m.confirmed,
@@ -8982,7 +8995,11 @@ ${rows}
                                             return (
                                                 <th key={iso} colSpan={2}>
                                                     {DOW_LABELS[d.getDay()]} {d.getMonth() + 1}/{d.getDate()}
-                                                    <div className="att-th-sub">{metrics[i].confirmed} conf · {metrics[i].present} in</div>
+                                                    <div className="att-th-sub">
+                                                        {metrics[i].confirmed} conf · {metrics[i].reported
+                                                            ? `${metrics[i].present} in`
+                                                            : <span className="att-nosheet">no sheet</span>}
+                                                    </div>
                                                 </th>
                                             );
                                         })}
@@ -9030,8 +9047,10 @@ ${rows}
                                                                 <option value="">Absent</option>
                                                                 {ABSENCE_REASONS.map(x => <option key={x.id} value={x.id}>{x.label}</option>)}
                                                             </select>
+                                                        ) : !d.reported ? (
+                                                            <span className="att-pending" title="No staffing sheet saved for this day yet — attendance fills in once there is one">—</span>
                                                         ) : (
-                                                            <span className="att-off">off</span>
+                                                            <span className="att-off" title="Not scheduled for this day">off</span>
                                                         )}
                                                         <button
                                                             className="att-flip"
@@ -9063,7 +9082,8 @@ ${rows}
 
                     <div className="quick-add-hint" style={{ marginTop: '10px' }}>
                         Attendance follows the staffing sheets: on a line that day means present, scheduled but not
-                        placed means absent. Use ⇄ to override a day by hand and ↺ to hand it back to the sheet.
+                        placed means absent. A day with no sheet saved yet stays blank (—) rather than counting
+                        everyone scheduled as absent. Use ⇄ to override a day by hand and ↺ to hand it back to the sheet.
                     </div>
                 </div>
             );
