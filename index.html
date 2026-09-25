@@ -9622,6 +9622,8 @@ ${rows}
                 try {
                     if (isSignup) {
                         const cred = await auth.createUserWithEmailAndPassword(email.trim(), password);
+                        // Company-domain accounts get data access once verified (see database.rules.json).
+                        try { await cred.user.sendEmailVerification(); } catch (e) { console.error('Verification email failed:', e); }
                         recordUserSession(cred.user, true);
                         logActivity('account_created', (cred.user && cred.user.email) || email.trim());
                     } else {
@@ -9734,11 +9736,87 @@ ${rows}
             );
         }
 
+        // Mirrors database.rules.json: a verified address on this domain gets data
+        // access without an /allowedUsers entry.
+        const COMPANY_EMAIL_DOMAIN = '@employbridge.com';
+        const needsEmailVerification = (u) =>
+            !!u && !u.emailVerified && (u.email || '').toLowerCase().endsWith(COMPANY_EMAIL_DOMAIN);
+
+        // Shown to an unverified company-domain account. The database denies it
+        // until the address is verified, so the app would only fail to save.
+        function VerifyEmailScreen({ user, onVerified }) {
+            const [error, setError] = useState('');
+            const [note, setNote] = useState('');
+            const [busy, setBusy] = useState(false);
+
+            const handleCheck = async () => {
+                setError('');
+                setNote('');
+                setBusy(true);
+                try {
+                    await user.reload();
+                    if (auth.currentUser && auth.currentUser.emailVerified) {
+                        // Force a fresh ID token so the database sees email_verified = true.
+                        await auth.currentUser.getIdToken(true);
+                        onVerified();
+                        return;
+                    }
+                    setError('Not verified yet. Click the link in the email, then try again.');
+                } catch (e) {
+                    setError('Couldn’t check verification status. Try again in a moment.');
+                }
+                setBusy(false);
+            };
+
+            const handleResend = async () => {
+                setError('');
+                setNote('');
+                try {
+                    await user.sendEmailVerification();
+                    setNote('Verification email sent to ' + user.email + '.');
+                } catch (e) {
+                    setError(e && e.code === 'auth/too-many-requests'
+                        ? 'Too many requests. Wait a few minutes before resending.'
+                        : 'Couldn’t send the email. Try again in a moment.');
+                }
+            };
+
+            return (
+                <div className="auth-screen">
+                    <div className="auth-card">
+                        <div className="auth-card-header">
+                            <h1>Line Planner</h1>
+                            <p>Verify your email</p>
+                        </div>
+                        <div className="auth-card-body">
+                            {error && <div className="auth-error">{error}</div>}
+                            {note && <div className="auth-note success">{note}</div>}
+                            <div className="auth-note info">
+                                We sent a verification link to <strong>{user.email}</strong>. Click it,
+                                then come back here. Check your spam folder if it doesn’t arrive.
+                            </div>
+                            <button type="button" className="auth-submit" onClick={handleCheck} disabled={busy}>
+                                {busy ? 'Checking…' : 'I’ve verified my email'}
+                            </button>
+                            <button type="button" className="auth-forgot" onClick={handleResend} disabled={busy}>
+                                Resend verification email
+                            </button>
+                            <button type="button" className="auth-forgot" onClick={() => auth.signOut()} disabled={busy}>
+                                Sign out
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         // Root decides between the login gate and the app based on auth state.
         function Root() {
             // 'checking' until Firebase reports the restored session; then 'in' or 'out'.
             const [authState, setAuthState] = useState(isAuthEnabled ? 'checking' : 'in');
             const [user, setUser] = useState(null);
+            // user.reload() mutates the same object, so bump this to re-render after verifying.
+            const [, setVerifyTick] = useState(0);
 
             useEffect(() => {
                 if (!isAuthEnabled) return;
@@ -9758,6 +9836,9 @@ ${rows}
                 );
             }
             if (authState === 'out') return <LoginScreen />;
+            if (needsEmailVerification(user)) {
+                return <VerifyEmailScreen user={user} onVerified={() => setVerifyTick(t => t + 1)} />;
+            }
             return <App user={user} />;
         }
 

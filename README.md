@@ -181,18 +181,25 @@ signed in cannot be the thing that grants access to data — see below.
 
 ### Access control
 
-`database.rules.json` requires a signed-in user **whose UID is listed under
-`/allowedUsers`**. A stranger can still register an account, but it gets them nothing:
-every path denies them.
+`database.rules.json` grants access to a signed-in user who **has a verified
+`@employbridge.com` email** or **whose UID is listed under `/allowedUsers`**. A stranger
+can still register an account, but it gets them nothing: every path denies them.
 
-To add a teammate — have them sign up in the app first, then:
+**@employbridge.com teammates need no approval.** They sign up in the app, get a
+verification email, click the link, and are in. Until they verify, the app shows a
+"Verify your email" screen instead of the planner. Verification is required because
+Email/Password sign-up doesn't prove someone owns the address they typed. The domain
+lives in two places that must match: the rules and `COMPANY_EMAIL_DOMAIN` in `index.html`.
+
+To add anyone outside that domain, have them sign up in the app first, then run:
 
 ```sh
 echo 'true' | firebase database:set /allowedUsers/<their-uid> --project lineplanner-7a8af
 ```
 
 Find UIDs in the Firebase console under **Authentication → Users**. To revoke someone,
-delete their `/allowedUsers` entry and their account.
+delete their `/allowedUsers` entry and their account (for a company-domain user,
+deleting or disabling the account is what revokes access).
 
 `/allowedUsers` is not writable by app users at all — only via console/CLI, which bypass
 rules. That means an approved user cannot approve anyone else.
@@ -205,9 +212,6 @@ firebase deploy --only database
 
 ### Worth doing
 
-- **Disable self-service sign-up** (Authentication → Settings → User actions) so
-  strangers can't create accounts at all. The allowlist already makes those accounts
-  useless, but this stops the clutter.
 - **Firebase App Check** if you want requests attested as coming from your real app.
 
 ### Setup status

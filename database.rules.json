@@ -1,11 +1,18 @@
 // Line Planner — Realtime Database security rules
 //
-// Access requires a signed-in user whose UID is listed under /allowedUsers.
+// Access requires a signed-in user who either
+//   - is listed under /allowedUsers, or
+//   - has a VERIFIED @employbridge.com email address.
 // Being signed in is NOT sufficient: the Firebase web API key is public by
 // necessity (it ships inside index.html), so anyone can create an account.
-// The allowlist is what actually gates the data.
+// Verification matters too — Email/Password sign-up does not prove the person
+// owns the address, so an unverified @employbridge.com account gets nothing.
+// The allowlist covers owners and anyone outside the company domain.
 //
-// To add a teammate: have them sign up in the app, then an owner runs
+// @employbridge.com teammates need no action: they sign up in the app, click
+// the verification link, and are in.
+//
+// To add anyone else: have them sign up in the app, then an owner runs
 //   firebase database:set /allowedUsers/<uid> --project lineplanner-7a8af
 // (echo 'true' into it), or sets it in the console under
 // Realtime Database -> Data. Find UIDs under Authentication -> Users.
@@ -22,49 +29,59 @@
   "rules": {
     // Only an owner (console/CLI) may change the allowlist.
     "allowedUsers": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
       ".write": false
     },
 
     "staffing": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     },
 
     "roster": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     },
 
     "settings": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     },
 
     "activity": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     },
 
     "users": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
+    },
+
+    "attendance": {
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
+    },
+
+    "scorecard": {
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     },
 
     // Populated only when the rosterAdmin feature flag is enabled.
     "statusList": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     },
 
     "statusMeta": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     },
 
     "statusRaw": {
-      ".read": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true",
-      ".write": "auth != null && root.child('allowedUsers').child(auth.uid).val() === true"
+      ".read": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))",
+      ".write": "auth != null && (root.child('allowedUsers').child(auth.uid).val() === true || (auth.token.email_verified === true && auth.token.email.toLowerCase().endsWith('@employbridge.com')))"
     }
   }
 }
